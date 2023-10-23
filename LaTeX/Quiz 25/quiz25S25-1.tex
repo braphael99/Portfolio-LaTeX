@@ -1,0 +1,226 @@
+\documentclass[11pt]{article} 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+%\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+\newtheorem*{requiredHC}{Problem HC}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\ 
+Instructors: Chandra Kanth Nagesh and Prof. Ryan Layer} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Quiz 25 Standard 25 --  DP -- Design a DP Algorithm \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{Your Name}
+\date{}
+
+\begin{document}
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.gif}
+\DeclareGraphicsExtensions{.jpg}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill TODO \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Quiz Code (enter in Canvas to get access to the LaTeX template) \dotfill \textbf{GHSDA}
+
+
+\tableofcontents
+
+\section*{Instructions}
+\addcontentsline{toc}{section}{Instructions}
+ \begin{itemize}
+	\item You may either type your work using this template, or you may handwrite your work and embed it as an image in this template. \textbf{If you choose to handwrite your work, the image must be legible, and oriented so that we do not have to rotate our screens to grade your work.} We have included some helpful LaTeX commands for including and rotating images commented out near the end of the LaTeX template.
+	\item You should submit your work through the \textbf{class Gradescope page} only. Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You \textbf{may not collaborate with other students}. \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Discord, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\newpage
+\section*{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+\addcontentsline{toc}{section}{Honor Code (Make Sure to Virtually Sign)}
+\hypertarget{HonorCode}{}
+
+\begin{requiredHC}
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+\end{requiredHC}
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+
+
+\newpage
+\setcounter{section}{24}
+\section{Standard 25: Dynamic Programming: Design a Dynamic Programming Algorithm}
+
+\setcounter{required}{24}
+\begin{required} 
+Here we consider a weighted version of the string alignment (aka edit distance) problem from class. In this version, each operation has a different cost:
+\begin{itemize}
+\item The cost of a \textsf{delete} operation is 2
+\item The cost of an \textsf{insert} operation is 3
+\item The cost of an \textsf{substitute} operation 5
+\item (No-op is still free, when the letters match)
+\end{itemize}
+
+The \textsf{Weighted Edit Distance} problem is: 
+\begin{itemize}
+\item \textsf{Input:} Two strings $x,y$
+\item \textsf{Output:} The minimum total cost of a sequence of delete, insert, and substitute operations that transforms $x$ into $y$.
+\end{itemize}
+Complete the following parts.
+
+\begin{itemize}[(a)]
+	\item We are given the following \textbf{subproblem}: Define $t[n,m]$ to be the minimum cost of delete, insert, and substitute operations needed to transform the prefix $x[1..n]$ into the prefix $y[1..m]$ (note that when $n=0$, the prefix $x[1..n]$ is, by definition, the empty string). 
+	
+	Identify the \textbf{recurrence relation} for the problem: (2 points)
+	\begin{proof}[Answer]
+		\[
+		t[n,m] = \begin{cases}
+		0 &:n = 0, m = 0\\
+		t[n-1,m-1] &: \text{if $x_n = y_m$}\\
+		2 + min(t[n - 1, m], t[n, m - 1]) &: \text{if $n < m$ and $x_n \neq y_m$}\\
+		3 + min(t[n - 1, m], t[n, m - 1]) &: \text{if $n > m$ and $x_n \neq y_m$}\\
+		5 + min(t[n - 1, n], t[n, m - 1]) &: \text{if $x_n \neq y_m$ and $n = m$}\\
+		\end{cases}
+		\]
+	\end{proof}
+
+	\item Let $x = cat$ and $y = kite$. Using a bottom-up dynamic programming approach, determine the minimum-cost sequence of delete, insert, and substitution operations to transform $x$ into $y$. For your convenience, we have provided the lookup table for you to use. You may also hand-draw your lookup tables.
+	
+	Fill in the entire table; clearly show all work for how you filled in \textbf{row 3 (corresponding to $x[1..3]=cat$)} of the table (you don't have to show work for the rest of the table, but you \textbf{do} need to fill it in). (2 points)
+
+	\begin{proof}[Answer]
+		The final DP table is as follows:
+		\begin{center}
+			\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			   & -   & k & i & t & e \\ \hline
+			-  &  0  & 3 & 6 & 9 & 12 \\ \hline
+			c &  3   & 5 & 8 & 11& 14 \\ \hline
+			a &  6   & 8 & 10& 13& 16 \\ \hline
+			t  &  9  & 11& 13& 10& 12  \\ \hline
+			\end{tabular}
+		\end{center}
+		
+		Work for row 3 (corresponding to the prefix $x[1..3] = cat$)):
+		\begin{itemize}
+		\item (3,0): 9 because you have to have 3 inserts. $3 \cdot 3 = 9$.\\
+		
+		\item (3,1): 11 because you need 1 substitution and 2 inserts. $5 + (3 \cdot 2) = 11$.\\
+		
+		\item (3,2): 13 because you need 2 substitutions and 1 insert. $(5 \cdot 2) + 3 = 13$.\\
+		
+		\item (3,3): 10 because you need 2 substitutions and 1 no-op. $(5 \cdot 2) + 0 = 10$.\\
+		
+		\item (3,4): 12 because you need 2 substitutions, 1 no-op, and 1 deletion. $(5 \cdot 2) + 0 + 2 = 12$.\\
+		\end{itemize}
+		
+	\end{proof}
+
+
+\end{itemize}
+
+\end{required}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT
+
+
+

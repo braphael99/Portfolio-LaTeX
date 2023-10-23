@@ -1,0 +1,218 @@
+\documentclass[11pt]{article} 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+%\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+\newtheorem*{requiredHC}{Problem HC}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\ 
+Instructors: Chandra Kanth Nagesh and Prof. Ryan Layer} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Quiz 20 Standard 20 -- (Divide \& Conquer) QuickSort \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{Your Name}
+\date{}
+
+\begin{document}
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.gif}
+\DeclareGraphicsExtensions{.jpg}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill TODO \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Quiz Code (enter in Canvas to get access to the LaTeX template) \dotfill \textbf{MQRYY}
+
+
+\tableofcontents
+
+\section*{Instructions}
+\addcontentsline{toc}{section}{Instructions}
+ \begin{itemize}
+	\item You may either type your work using this template, or you may handwrite your work and embed it as an image in this template. \textbf{If you choose to handwrite your work, the image must be legible, and oriented so that we do not have to rotate our screens to grade your work.} We have included some helpful LaTeX commands for including and rotating images commented out near the end of the LaTeX template.
+	\item You should submit your work through the \textbf{class Gradescope page} only. Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You \textbf{may not collaborate with other students}. \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Discord, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\newpage
+\section*{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+\addcontentsline{toc}{section}{Honor Code (Make Sure to Virtually Sign)}
+\hypertarget{HonorCode}{}
+
+\begin{requiredHC}
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+\end{requiredHC}
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+
+
+\newpage
+\setcounter{section}{19}
+\section{Standard 20 -- (Divide \& Conquer) QuickSort (4 points)}
+
+\setcounter{required}{19}
+\begin{required} 
+Consider a modified version of \textsc{QuickSort}, in which the \textsc{Partition} subroutine \textit{always chooses the 9-th largest element} for a list of size $n \geq 9$. You may assume \textsc{Partition} still takes $\Theta(n)$ time on lists of length $n$. (4 points)
+
+Do the following \textbf{three} parts of the question.
+
+\begin{enumerate}
+\item \textbf{Write down} the recurrence relation for the runtime of this modified version of \textsc{QuickSort}. \textbf{Justify your recurrence relation in 1--2 sentences.} (1 point)
+\begin{proof}[Answer]
+% YOUR ANSWER HERE
+\begin{align*}
+	T(n) = \begin{cases}
+		\Theta(n) & : n < 9, \\
+		T(9) + T(n-9) + \Theta(n) & : n \geq 9.
+	\end{cases}
+\end{align*}
+
+This would be our recurrence relation because we recurse on the 9th largest element for every recursion call.\\
+
+\end{proof}
+
+\vspace{1in}
+
+\item Solve your recurrence relation from part (1), by any method you choose. \textbf{Show your work.}  Find a function $f(n)$ such that the runtime $T(n)$ is $T(n) = \Theta(f(n))$. (2 points)
+\begin{proof}[Answer]
+% YOUR ANSWER HERE
+We see that: \\
+\begin{align*}
+	T(n) &= T(n-10) + \Theta(n-9) + \Theta(n))\\
+	&= T(n - 11) + \Theta(n - 10) + \Theta(n - 1) + \Theta(n)\\
+	&= T(n - 9+k) + \Theta(n - ((9+k) + 1)) + ... + \Theta(n)
+\end{align*}\\
+
+So $T(n) \in \Theta(n^2)$\\
+
+\end{proof}
+
+\vspace{1in}
+
+\item Write down the following three functions and put them in order from smallest to largest. If two are asymptotically equal ($\Theta$ of one another), you should clearly indicate this. (1 point)
+\begin{itemize}
+\item the best-case running time of \textsc{QuickSort} (when it always chooses the best possible pivot), 
+\item the worst-case running time of \textsc{QuickSort} (when it always chooses the worst possible pivot), 
+\item your answer from part (2) above. 
+\end{itemize}
+\textbf{You do not} need to recalculate the best- and worst-case runtimes, those you can get from class notes. 
+\end{enumerate}
+
+\end{required}
+
+
+\begin{proof}[Answer]
+	The ordering for runtimes of quicksort is as follows:\\
+	Best Runtime $<$ Answer from part 2 $\in \Theta$(Worst Runtime).\\
+	
+% YOUR ANSWER HERE
+% Either type your answer in above, or uncomment the \includegraphics command
+% and use it to insert an approprate image. Try experimenting with the scale 
+% 0.9 the width option to resize your image if necessary.
+
+%\includegraphics[width=0.9\textwidth]{solution.jpg}
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT
+
+
+

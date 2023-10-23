@@ -1,0 +1,210 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usetikzlibrary{positioning, automata, backgrounds}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{forest}
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newcommand{\interval}[4]{\draw (#2, #1) -- (#3, #1); % Usage: \interval{height}{start}{end}{label}
+\draw (#2, #1-0.11) -- (#2, #1+0.11); % draw left whisker
+\draw (#3, #1-0.11) -- (#3, #1+0.11); % draw right whisker
+\node[] at (#2-0.25, #1) {#4};
+}
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\ 
+Instructors: Ryan Layer and Chandra Kanth Nagesh} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Homework 5 \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{}
+\date{}
+
+\begin{document}
+
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.gif}
+\DeclareGraphicsExtensions{.jpg}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill February 9, 2023 \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Collaborators \dotfill \textbf{Alex Barry and Brody Cyphers}
+
+\tableofcontents
+
+\section{Instructions}
+ \begin{itemize}
+	\item The solutions \textbf{should be typed}, using proper mathematical notation. We cannot accept hand-written solutions. \href{http://ece.uprm.edu/~caceros/latex/introduction.pdf}{Here's a short intro to \LaTeX.}
+	\item You should submit your work through the \textbf{class Gradescope page} only (linked from Canvas). Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You are welcome and encouraged to collaborate with your classmates, as well as consult outside resources. You must \textbf{cite your sources in this document.} \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\section{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+
+%\begin{required}
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+%\end{required}
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+
+\newpage
+
+\section{Standard 5 -- Exchange Arguments}
+\setcounter{subsection}{4}
+\subsection{Problem \ref{Exchange1} (1 point)}
+\begin{required} \label{Exchange1}
+Recall the Making Change problem, where we have an infinite supply of pennies (worth $1$ cent), nickels (worth $5$ cents), dimes (worth $10$ cents), and quarters (worth $25$ cents). We take as input an integer $n \geq 0$. The goal is to make change for $n$ using the fewest number of coins possible. \\
+
+\noindent Prove that in an optimal solution, we use at most $2$ dimes. 
+\end{required}
+
+\begin{proof}
+Let $n \geq 0$ and suppose that an optimal solution $S$ uses at least 3 dimes. Then it is valid to remove the three nickels and replace them with a quarter and a nickel resulting in a solution $S\prime$ with one less coin. The total of the coins is still $n$ as we removed $3 \cdot 10 = 30$ and gained $25 + 5 = 30$ by exchanging 3 dimes for a nickel and a quarter. But $S\prime$ has one less coin than $S$, contradicting the optimality of $S$, hence it must be that any optimal solution for $n$ must use $2$ or less dimes. Therefore, the optimal solution for $n$ must use at most $2$ dimes.
+\end{proof}
+
+\newpage
+\subsection{Problem \ref{Exchange2}}
+
+\begin{required} \label{Exchange2}
+Consider the \textsf{Interval Projection} problem, which is defined as follows.
+\begin{itemize}
+\item \textsf{Instance:} Let $\mathcal{I}$ be a set of intervals on the real line.
+\item \textsf{Solution:} A minimum sized set $S$ of points on the real line, such that (i) for every interval $[s, f] \in \mathcal{I}$, there exists a point $x \in S$ where $x$ is in the interval $[s, f]$. We call $S$ a \textit{projection set}.
+\end{itemize}
+
+\noindent Do the following.
+\begin{enumerate}[label=(\alph*)]
+        \subsubsection{Problem 7\ref{6a} (1 point)}
+\item \label{6a} Find a minimum sized projection set $S$ for the following set of intervals:
+\begin{align*}
+\mathcal{I} = \{ [0, 1], [0.5, 2], [1.5, 3], [2.5, 4], [0, 4], [0.25, 3] \}.
+\end{align*}
+
+\begin{proof}[Answer]
+The minimum sized projection set $S$ is $[0.25, 3]$ as\\
+$0.25 \in [0,1]$\\
+$2 \in [0.5, 2]$\\
+$3 \in [1.5, 3]$\\
+$3 \in [2.5, 4]$\\
+$3 \in [0, 4]$\\
+Since a point of every other interval is captured in $[0.25, 3]$, it is the minimum sized projection set.
+\end{proof}
+
+\newpage
+        \subsubsection{Problem 7\ref{6b} (2 points)}
+\item \label{6b} Fix a set of intervals $\mathcal{I}$, and let $S$ be a projection set. Prove that there exists a projection set $S^{\prime}$ such that (i) $|S^{\prime}| = |S|$, and (ii) where every point $x \in S^{\prime}$ is the right end-point of some interval $[s, f] \in \mathcal{I}$.
+
+\begin{proof}
+Let $S = \{S_1, S_2,..., S_n\}$\\
+
+Let $S^{\prime} = \{S_1^{\prime}, S_2^{\prime}, ..., S_n^{\prime}\}$\\
+
+Let $S_1^{\prime} = min_f\{S_1 \in [s, f]\}$\\
+
+So $S^{\prime}$ is a minimum sized projection set by definition and minimizes on $f$ (the right end-point).\\
+
+Since $S$ and $S^{\prime}$ go to $n$, $|S^{\prime}| = |S|$.\\
+
+Since we used minimum of $f$, which was the right endpoint, $S_i^{\prime}$ is the right end-point of the interval $S_i$, so every point $x \in S^{\prime}$ is the right end-point of some interval $[s, f] \in \mathcal{I}$.
+\end{proof}
+
+\end{enumerate}
+\end{required}
+
+
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT

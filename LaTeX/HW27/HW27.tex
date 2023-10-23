@@ -1,0 +1,216 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usetikzlibrary{positioning, automata, backgrounds}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{forest}
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+%\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newcommand{\interval}[4]{\draw (#2, #1) -- (#3, #1); % Usage: \interval{height}{start}{end}{label}
+\draw (#2, #1-0.11) -- (#2, #1+0.11); % draw left whisker
+\draw (#3, #1-0.11) -- (#3, #1+0.11); % draw right whisker
+\node[] at (#2-0.25, #1) {#4};
+}
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\title{
+\normalfont \normalsize
+\textsc{CSCI 3104 Spring 2023 \\
+Instructors: Ryan Layer and Chandra Kanth Nagesh} \\
+[10pt]
+\rule{\linewidth}{0.5pt} \\[6pt]
+\huge Homework 27 \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+\author{}
+\date{}
+\begin{document}
+
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.gif}
+\DeclareGraphicsExtensions{.jpg}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill April 20, 2023 \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Collaborators \dotfill \textbf{Alex Barry, Brody Cyphers, and Ben Kohav}
+
+\tableofcontents
+
+\section{Instructions}
+ \begin{itemize}
+	\item The solutions \textbf{should be typed}, using proper mathematical notation. We cannot accept hand-written solutions. \href{http://ece.uprm.edu/~caceros/latex/introduction.pdf}{Here's a short intro to \LaTeX.}
+	\item You should submit your work through the \textbf{class Gradescope page} only (linked from Canvas). Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You are welcome and encouraged to collaborate with your classmates, as well as consult outside resources. You must \textbf{cite your sources in this document.} \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\section{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+\newpage
+\section{Standard 27 - Doubling and Amortized Analysis}
+\addtocounter{required}{1}
+\begin{required}
+
+A dynamic array-list is a data structure that can support an arbitrary number
+    of append (add to the end) operations by allocating additional memory when
+    the array becomes full. The standard process covered in class is to double (adds $n$ more
+    space) the size of the array each time it becomes full. You cannot assume
+    that this additional space is available in the same block of memory as the
+    original array, so the dynamic array must be copied into a new array of
+    larger size. Here we consider what happens when we modify this process. The
+    operations that the dynamic array supports are 
+\begin{itemize}
+    \item {\tt Indexing A[i]}: returns the {\tt i}-th element in the array
+    \item {\tt Append(A,x)}: appends {\tt x} to the end of the array.  If the
+        array had {\tt n} elements in it (and we are using 0-based indexing),
+        then after {\tt Append(A, x)}, we have that {\tt A[n]} is {\tt x}.
+\end{itemize}
+
+\renewcommand{\theenumi}{\alph{enumi}}
+\begin{enumerate}
+\subsection*{27(a)}
+\addcontentsline{toc}{subsection}{27(a)}
+
+        \item \label{4c} Consider a dynamic array-list that adds 7 to its length (that is, increases length from $n$ to $n+7$) each time it's full. Derive the amortized runtime of Append for this data structure. Clearly explain the reasoning behind your calculations.
+\begin{proof}[Answer]
+    Consider the following hash table $A$:\\
+    We begin with $A$ at size 1.\\
+    After our first insertion, we resize $A$ to  $A^\prime$ at $n+7$ or $8$.\\
+    We continue insertions until we hit $8$ and have to resize $A^\prime \to A^{\prime\prime}$ at $n + 7$ or $15$.\\
+    This means we resize the table $\frac{n - 1}{7}$ times.\\
+    
+    Our number of operations is the following: \begin{align*}
+    	\displaystyle\sum_{i=1} ^{n} C_i &\leq n + \displaystyle\sum_{j=1} ^{\frac{n - 1}{7}} 7j\\
+    	&\leq n + \frac{1}{14}(n - 1)(n + 6)\\
+    	&= \Theta(n^2).\\
+    \end{align*}
+Since $\Theta(n^2)$ is the runtime of a list with $n$ items, we divide by $n$ to get the amortized runtime of append.\\
+So we get $\Theta(n)$ as the amortized runtime of Append.\\
+
+    
+    \end{proof}
+
+\newpage
+\subsection*{27(b)}
+\addcontentsline{toc}{subsection}{27(b)}
+    \item \label{4b} Derive the amortized runtime of Append for a dynamic array that squares its length (that is, increases length from $n$ to $n^2$) each time it's full. Derive the amortized runtime of Append for this data structure. Clearly explain the reasoning behind your calculations.
+\begin{proof}[Answer]
+    Consider the following hash table $A$:\\
+    We begin with $A$ at size 2.\\
+    After our second insertion, we resize $A$ to  $A^\prime$ at $n^2$ or $4$.\\
+    We continue insertions until we hit$4$ and have to resize $A^\prime \to A^{\prime\prime}$ at $n^2$ or $16$.\\
+    This means we resize the table $\log \log n$ times.\\
+    
+    
+    
+    Our number of operations is the following: \begin{align*}
+    	\displaystyle\sum_{i=1} ^{n} C_i &\leq n + \displaystyle\sum_{j=1} ^{\log \log n} n^{\frac{1}{2^k}}\\
+    	&\leq n + \displaystyle\sum_{j=1} ^{\log \log n} n^{\frac{1}{2}}\\
+    	&\leq n + n^{\frac{1}{2}}\log \log n\\
+    	&= \Theta(n).\\
+    \end{align*}
+
+	Since $\Theta(n)$ is the runtime of a list with $n$ items, we divide by $n$ to get the amortized runtime of append.\\
+	So we get $\Theta(1)$ as the amortized runtime of Append.\\
+    \end{proof}
+    
+    \end{enumerate}
+    \end{required}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT

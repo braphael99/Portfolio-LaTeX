@@ -1,0 +1,6 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Instructions}{1}{section.1}%
+\contentsline {section}{\numberline {2}Honor Code (Make Sure to Virtually Sign)}{2}{section.2}%
+\contentsline {section}{\numberline {3}Standard 24: Backtracking to find Solutions}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Problem \ref {DP1} (2 Points)}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Problem \ref {DP2} (2 Points)}{4}{subsection.3.2}%

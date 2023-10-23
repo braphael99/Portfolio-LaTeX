@@ -1,0 +1,185 @@
+\documentclass[11pt]{article} 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\
+Instructors: Prof. Layer and Chandra Kanth Nagesh} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Midterm 1 Standard 6 - Safe and Usless Edges  \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{Your Name}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill March 10 \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Quiz Code (enter in Canvas to get access to the LaTeX template) \dotfill \textbf{QERFA} \\
+
+\tableofcontents
+
+\section{Instructions}
+ \begin{itemize}
+	\item The solutions \textbf{should be typed}, using proper mathematical notation. We cannot accept hand-written solutions. \href{http://ece.uprm.edu/~caceros/latex/introduction.pdf}{Here's a short intro to \LaTeX.}
+	\item You should submit your work through the \textbf{class Canvas page} only. Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You \textbf{may not collaborate with other students}. \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Discord, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\end{itemize}
+
+\newpage
+\section{Standard 6 - Safe, Useless, and Undecided Edges}
+
+\subsection{Problem \ref{SafeUseless1}}
+\begin{required} \label{SafeUseless1}
+Consider the following Spanning Forest $\mathcal{F}$ for the weighted graph $G(V, E, w)$ pictured below. Justify the inclusion or exclusion of each edge in $\mathcal{F}$ by deciding if the edges are safe, useless or undecided. \\
+\textbf{Note:} There are 8 edges that needs to be considered
+\begin{center}
+\tikz{
+    \tikzstyle{default}=[circle,top color = white, draw];
+    \node (A) at (0,2) [default] {$A$};
+    \node (B) at (2,4) [default] {$B$};
+    \node (C) at (2,0) [default] {$C$};
+    \node (D) at (4,2) [default] {$D$};
+    \node (E) at (6,4) [default] {$E$};
+    \node (F) at (6,0) [default] {$F$};
+    \node (G) at (8,2) [default] {$G$};
+
+    \draw (A) -- node[left] {$4$}  (B);
+    \draw[line width=3pt] (A) -- node[left] {$3$}  (C);
+
+    \draw[line width=3pt] (B) -- node[left]  {$1$} (C);
+    \draw (B) -- node[right] {$7$} (D);
+    \draw (B) -- node[above] {$8$} (E);
+
+    \draw (C) -- node[right] {$6$} (D);
+    \draw (C) -- node[above] {$12$} (F);
+
+    \draw[line width=3pt] (D) -- node[left]  {$5$}(E);
+    \draw (D) -- node[right] {$10$} (F);
+
+    \draw (E) -- node[right] {$9$}(F);
+    \draw[line width=3pt] (E) -- node[right] {$2$}(G);
+
+    \draw (F) -- node[right] {$11$} (G);
+}
+\end{center}
+
+% Either type your answer in below, or uncomment the \includegraphics command
+% and use it to insert an approprate image. Try experimenting with the scale
+% 0.9 the width option to resize your image if necessary.
+
+%\includegraphics[width=0.9\textwidth]{solution.jpg}
+
+\begin{proof}[Answer]
+The following edges are safe/useless/undecided:\\
+
+1.) The edge $\{A, B\}$ is useless because it has both end points in $\{A, B, C\}$.\\
+
+2.) The edge $\{B, E\}$ is undecided because it connects  $\{A, B, C\}$ and $\{D, E, G\}$ but is not a minimum weight edge.\\
+
+3.) The edge $\{B, D\}$ is undecided because it connects  $\{A, B, C\}$ and $\{D, E, G\}$ but is not a minimum weight edge.\\
+
+4.) The edge $\{C, D\}$ is safe because it connects  $\{A, B, C\}$ and $\{D, E, G\}$ and is a minimum weight edge.\\
+
+5.) The edge $\{C, F\}$ is safe because it connects $\{A, B, C\}$ and $\{F\}$ and is a minimum weight edge.\\
+
+6.) The edge $\{F, E\}$ is safe because it connects  $\{F\}$ and $\{D, E, G\}$ and is a minimum weight edge.\\
+
+7.) The edge $\{F, D\}$ is undecided because it connects  $\{F\}$ and $\{D, E, G\}$ but is not a minimum weight edge.\\
+
+8.) The edge $\{F, G\}$ is undecided because it connects  $\{F\}$ and $\{D, E, G\}$ but is not a minimum weight edge.\\
+\end{proof}
+
+
+
+%Include an Image: \includegraphics{ImageFileName}
+%Include an Image and Rotate 90 degree: \includegraphics[angle=90]{ImageFileName}
+%Include an Image, Rotate by 180 degrees, and scale by 50\% \includegraphics[scale=0.5, angle=90]{ImageFileName}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{required}
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT

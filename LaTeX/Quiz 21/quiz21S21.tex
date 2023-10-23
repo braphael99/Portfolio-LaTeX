@@ -1,0 +1,197 @@
+\documentclass[11pt]{article} 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+%\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+\newtheorem*{requiredHC}{Problem HC}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\ 
+Instructors: Chandra Kanth Nagesh and Prof. Ryan Layer} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Quiz 21 Standard 21 --  DP -- Identify Precise Subproblems \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{Your Name}
+\date{}
+
+\begin{document}
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.gif}
+\DeclareGraphicsExtensions{.jpg}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill TODO \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Quiz Code (enter in Canvas to get access to the LaTeX template) \dotfill \textbf{RTYZB}
+
+
+\tableofcontents
+
+\section*{Instructions}
+\addcontentsline{toc}{section}{Instructions}
+ \begin{itemize}
+	\item You may either type your work using this template, or you may handwrite your work and embed it as an image in this template. \textbf{If you choose to handwrite your work, the image must be legible, and oriented so that we do not have to rotate our screens to grade your work.} We have included some helpful LaTeX commands for including and rotating images commented out near the end of the LaTeX template.
+	\item You should submit your work through the \textbf{class Gradescope page} only. Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You \textbf{may not collaborate with other students}. \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Discord, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\newpage
+\section*{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+\addcontentsline{toc}{section}{Honor Code (Make Sure to Virtually Sign)}
+\hypertarget{HonorCode}{}
+
+\begin{requiredHC}
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+\end{requiredHC}
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+
+
+\newpage
+\setcounter{section}{20}
+\section{Standard 21: Dynamic Programming - Identify Precise Subproblems}
+
+\setcounter{required}{20}
+\begin{required} 
+Consider the following problem:
+\begin{quotation}
+\noindent \textbf{Input: } A list $[v_1, \dotsc, v_n]$ of values (each $v_i$ is a positive number)
+
+\noindent \textbf{Output: } A subset $S \subseteq \{1,\dotsc,n\}$ such that (1) no two adjacent items are in $S$ (that is, $S$ cannot contain both $i$ and $i+1$), and (2) maximizing $\sum_{i \in S} v_i$, subject to (1).
+\end{quotation}
+
+For example, if the input is $[7,4,5]$, an optimal solution $S$ is $\{1,3\}$, with value $7+5=12$; if we had included item $2$, then we could not include items 1 nor 3 because of the no-two-adjacent-items constraint (which would have resulted in a smaller value, namely 4).
+
+Suppose you are going to solve this problem by dynamic programming; this can be done with a \textbf{one-dimensional} table $T$. \textbf{Clearly define} what subproblems $T[i]$ corresponds to, and which other indices $j$ need to be considered when determining the value of $T[i]$. \textbf{Fill in the blanks}
+
+\begin{proof}[Answer]
+	We define $T[i]$ to be the highest optimal value achievable using a subset of the items $\{1,\dotsc,n\}$. In the recurrence we'd have to try two cases which are if the values are adjacent and if they are not adjacent. If case 1 we add the largest value to $S$, then we recursively use addition to iterate our index, since it can't include adjacents. If case 2 then we add the values to $S$, then we recurse on a $max$ function to iterate the index that will give us both the maximum value and no adjacents.\\
+\end{proof}
+\end{required}
+
+\vspace{5em}
+
+\setcounter{required}{21}
+\begin{required} 
+Consider the following problem:
+\begin{quotation}
+\noindent \textbf{Input: } Two strings $s$ and $t$, with their lengths $n = |s|$ and $m = |t|$.
+
+\noindent \textbf{Output: } We return $true$ if $s$ is a \textbf{subsequence} of $t$, or $false$ otherwise.
+\end{quotation}
+
+For example, if the input is $s = ``agdc"$, $t = ``ahbgdc"$, the output will be $true$. Since, $``agdc"$ occurs in $t$.
+
+Suppose you are going to solve this problem by dynamic programming; \textbf{(1)} Answer what kind of dynamic programming table are we going to use to solve the problem. \textbf{(2)} Clearly define what subproblems corresponds to. 
+
+\begin{proof}[Answer]
+	\begin{enumerate}
+		\item We are going to be using a two- dimensional table $DP[s, t]$
+		\item We define $DP[s, t]$ to be the table containing the optimal value achievable using a comparison of $s$ and $t$ to see if either is a subset of the other. In the recurrence we'd have to try two cases which are if a letter $s[i] \in t$ or if a letter $t[i] \in s$ and if a letter $s[i] \not\in t$ or if a letter $t[i] \not\in s$. If case 1 we will return true and add the letter to our substring. If case 2 then we return false and then iterate to the next letter until we hit $s[n]$ or $t[m]$.\\
+		
+	\end{enumerate}
+\end{proof}
+\end{required}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT
+
+
+

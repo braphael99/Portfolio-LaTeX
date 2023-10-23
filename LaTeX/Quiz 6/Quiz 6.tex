@@ -1,0 +1,264 @@
+\documentclass[11pt]{article} 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+\newtheorem*{requiredHC}{Problem HC}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\ 
+Instructors: Prof. Ryan Layer and Chandra Kanth Nagesh} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Quiz 6 Standard 6 - Safe, Useless, and Undecided Edges \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{Your Name}
+\date{}
+
+\begin{document}
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.gif}
+\DeclareGraphicsExtensions{.jpg}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill TODO \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Quiz Code (enter in Canvas to get access to the LaTeX template) \dotfill \textbf{NGTYH}
+
+
+\tableofcontents
+
+\section*{Instructions}
+\addcontentsline{toc}{section}{Instructions}
+ \begin{itemize}
+	\item You may either type your work using this template, or you may handwrite your work and embed it as an image in this template. \textbf{If you choose to handwrite your work, the image must be legible, and oriented so that we do not have to rotate our screens to grade your work.} We have included some helpful LaTeX commands for including and rotating images commented out near the end of the LaTeX template.
+	\item You should submit your work through the \textbf{class Gradescope page} only. Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You \textbf{may not collaborate with other students}. \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Discord, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\newpage
+\section*{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+\addcontentsline{toc}{section}{Honor Code (Make Sure to Virtually Sign)}
+\hypertarget{HonorCode}{}
+
+\begin{requiredHC}
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+\end{requiredHC}
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+
+
+\newpage
+\setcounter{section}{5}
+\section{Standard 6: Safe and Useless Edges (4 points)}
+
+\setcounter{required}{5}
+\begin{required} \label{Safe1}
+Consider the following graph $G(V, E, w)$. Suppose we have the intermediate spanning forest $\mathcal{F}$ (indicated using thick edges) consisting of the edges $\{A, C\}$, $\{A, H\}$, $\{D, G\}$, and $\{E, F\}$. Clearly identify the safe, useless, and undecided edges, and justify your reasoning.
+\begin{center}
+\begin {tikzpicture}[semithick]
+\tikzstyle{blue}=[circle ,top color =white , bottom color = processblue!20 ,draw,processblue , text=blue , minimum width =1 cm];
+\tikzstyle{red}=[circle ,top color =white , bottom color = processred!20 ,draw, processred , text=blue , minimum width =1 cm];
+\tikzstyle{green}=[circle ,top color =white , bottom color = processgreen!20 ,draw, processgreen , text=blue , minimum width =1 cm];
+
+	\node[blue] (A) {$A$};
+	\node[blue] (B) [above right = of A] {$B$};
+	\node[blue] (C) [below right = of A] {$C$};
+	\node[blue] (D) [right = of B] {$D$};
+	\node[blue] (E) [right = of C] {$E$};
+	\node[blue] (F) [below right = of D] {$F$};
+	\node[blue] (G) [right = of D] {$G$};
+	\node[blue] (H) [left = of C] {$H$};
+	\node[blue] (I) [right = of E] {$I$};
+	
+	\path (A) edge node[above] {$4$} (B);
+	\draw[line width=3pt] (A) edge node[right] {$3$} (C);
+	\path (B) edge node[left] {$9$} (E);
+	\path (B) edge node[above] {$6$} (D);
+	\path (C) edge node[above] {$7$} (E);
+	\draw[line width=3pt] (G) edge node[above] {$1$} (D);
+	\path (D) edge node[above] {$10$} (F);
+	\draw[line width=3pt] (E) edge node[below] {$5$} (F);
+	\path (C) edge node[above] {$8$} (H);
+	\draw[line width=3pt] (A) edge node[left] {$2$} (H);
+	\path (E) edge node[below] {$11$} (I);
+	\path (F) edge node[right] {$12$} (I);
+	\end{tikzpicture}  
+\end{center}
+\end{required}
+
+
+\begin{proof}[Answer]
+\begin{itemize}
+\item The edge $\{A, B\}$ is safe % safe/useless/undecided
+because it is a subgraph of the minimum weight spanning tree. %Your answer here
+\item The edge $\{B, E\}$ is undecided % safe/useless/undecided
+because it is neither a safe nor useless edge. %Your answer here
+\item The edge $\{B, D\}$ is safe % safe/useless/undecided
+because it is a subgraph of the minimum weight spanning tree. %Your answer here
+\item The edge $\{C, E\}$ is safe % safe/useless/undecided
+because it is a subgraph of the minimum weight spanning tree. %Your answer here
+\item The edge $\{D, F\}$ is useless % safe/useless/undecided
+because it creates a link between two nodes already in our forest $\mathcal{F}$ and would create a cycle when considering our other safe edges. %Your answer here
+\item The edge $\{H, C\}$ is useless % safe/useless/undecided
+because it creates a link between two nodes already in our forest $\mathcal{F}$ and would create a cycle. %Your answer here
+\item The edge $\{E, I\}$ is safe % safe/useless/undecided
+because it is a subgraph of our minimum weight spanning tree. %Your answer here
+\item The edge $\{F, I\}$ is undecided % safe/useless/undecided
+because it is neither a safe nor useless edge. %Your answer here
+\end{itemize}
+\end{proof}
+
+% Either type your answer in below, or uncomment the \includegraphics command
+% and use it to insert an approprate image. Try experimenting with the scale 
+% 0.9 the width option to resize your image if necessary.
+
+%\includegraphics[width=0.9\textwidth]{solution.jpg}
+
+\setcounter{required}{6}
+\begin{required} \label{Safe2}
+You have studied the properties of Light, Safe, Useless and Undecided edges. Give an example graph $G(V,E,w)$ and a intermediate spanning forest $\mathcal{F}$ where it consists of an edge that is \textbf{Safe} but not \textbf{Light}. Clearly explain your reasoning as to why it is the case.
+
+\noindent
+\textbf{Note:} We know that all light edges are safe but not vice-versa.
+
+\begin{proof}[Answer] Consider the following graph $G(V,E,w)$ and the spanning forest $\mathcal{F}$ indicated by the bold lines and consisting of the edges $\{A, C\}$, $\{A, H\}$, $\{D, G\}$, and $\{E, F\}$.:\\
+	\begin{center}
+		\begin {tikzpicture}[semithick]
+		\tikzstyle{blue}=[circle ,top color =white , bottom color = processblue!20 ,draw,processblue , text=blue , minimum width =1 cm];
+		\tikzstyle{red}=[circle ,top color =white , bottom color = processred!20 ,draw, processred , text=blue , minimum width =1 cm];
+		\tikzstyle{green}=[circle ,top color =white , bottom color = processgreen!20 ,draw, processgreen , text=blue , minimum width =1 cm];
+		
+		\node[blue] (A) {$A$};
+		\node[blue] (B) [above right = of A] {$B$};
+		\node[blue] (C) [below right = of A] {$C$};
+		\node[blue] (D) [right = of B] {$D$};
+		\node[blue] (E) [right = of C] {$E$};
+		\node[blue] (F) [below right = of D] {$F$};
+		\node[blue] (G) [right = of D] {$G$};
+		\node[blue] (H) [left = of C] {$H$};
+		\node[blue] (I) [right = of E] {$I$};
+		
+		\path (A) edge node[above] {$4$} (B);
+		\draw[line width=3pt] (A) edge node[right] {$3$} (C);
+		\path (B) edge node[left] {$9$} (E);
+		\path (B) edge node[above] {$6$} (D);
+		\path (C) edge node[above] {$7$} (E);
+		\draw[line width=3pt] (G) edge node[above] {$1$} (D);
+		\path (D) edge node[above] {$10$} (F);
+		\draw[line width=3pt] (E) edge node[below] {$5$} (F);
+		\path (C) edge node[above] {$8$} (H);
+		\draw[line width=3pt] (A) edge node[left] {$2$} (H);
+		\path (E) edge node[below] {$11$} (I);
+		\path (F) edge node[right] {$12$} (I);
+	\end{tikzpicture}  
+\end{center}
+
+The edge $\{A, B\}$ is an edge that is safe but not light because it connects two of the nodes that are \textbf{not} completely across a cut in our forest $\mathcal{F}$ while still maintaining the properties of being safe (aka being a part of the minimum weight spanning tree).\\
+	% Either type your answer in below, or uncomment the \includegraphics command
+	% and use it to insert an approprate image. Try experimenting with the scale 
+	% 0.9 the width option to resize your image if necessary.
+
+	%\includegraphics[width=0.9\textwidth]{solution.jpg}
+\end{proof}
+
+\end{required}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT
+
+
+

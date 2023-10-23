@@ -1,0 +1,267 @@
+\documentclass[11pt]{article} 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+% \usepackage{tkz-berge}
+
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+\newtheorem*{requiredHC}{Problem HC}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\
+Instructor: Prof. Ryan Layer and Chandra Kanth Nagesh} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Quiz 2 Standard 2 - BFS/DFS \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{Your Name}
+\date{}
+
+\begin{document}
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill TODO \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Quiz Code (enter in Canvas to get access to the LaTeX template) \dotfill \textbf{CVDFO}
+
+\tableofcontents
+
+\section*{Instructions}
+\addcontentsline{toc}{section}{Instructions}
+ \begin{itemize}
+	\item You may either type your work using this template, or you may handwrite your work and embed it as an image in this template. \textbf{If you choose to handwrite your work, the image must be legible, and oriented so that we do not have to rotate our screens to grade your work.} We have included some helpful LaTeX commands for including and rotating images commented out near the end of the LaTeX template.
+	\item You should submit your work through the \textbf{class Canvas page} only. Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You \textbf{may not collaborate with other students}. \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Discord, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\newpage
+\section*{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+\addcontentsline{toc}{section}{Honor Code (Make Sure to Virtually Sign)}
+\hypertarget{HonorCode}{}
+
+\begin{requiredHC}
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+\end{requiredHC}
+
+\begin{proof}[Agreed (I agree to the following, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+
+
+\newpage
+\setcounter{section}{1}
+\section{Standard 2 BFS/DFS}
+
+\setcounter{required}{1}
+\begin{required} \label{dfs1}
+A \emph{simple $s \to t$ path} in a graph $G$ is a path in $G$ starting at $s$, ending at $t$, and never visiting the same vertex twice. Using the graph $G(V,E)$ below and vertices $s,t \in V(G)$, find a path that (i) starts at $s$ and ends at $t$, (ii) that DFS traverses, and (iii) is neither a shortest path nor a longest simple path. Detail the execution of DFS (list the contents of the stack at each step, and which vertex it pops off the stack). Additionally, show (a) the final $s \to t$ path it finds, (b) show a shorter $s \to t$ path, and (c) a longer simple $s \to t$ path.
+
+
+\begin{center}
+\begin {tikzpicture}[semithick]
+\tikzstyle{blue}=[circle ,top color =white , bottom color = processblue!20 ,draw,processblue , text=blue , minimum width =1 cm];
+\tikzstyle{red}=[circle ,top color =white , bottom color = processred!20 ,draw, processred , text=blue , minimum width =1 cm];
+\tikzstyle{green}=[circle ,top color =white , bottom color = processgreen!20 ,draw, processgreen , text=blue , minimum width =1 cm];
+
+	\node[blue] (A) {$s$};
+	\node[blue] (B) [above right = of A] {$b$};
+	\node[blue] (C) [below right = of A] {$c$};
+	\node[blue] (D) [right = of B] {$d$};
+	\node[blue] (E) [right = of C] {$e$};
+	\node[blue] (H) [right = of E] {$f$};
+	\node[blue] (F) [below right = of D] {$t$};
+	\node[blue] (G) [right = of A] {$h$}; 
+	\node[blue] (J) [right = of F] {$y$}; 
+
+	\path (A) edge (B);
+	\path (A) edge (G);
+	\path (G) edge (F);
+	\draw (A) edge (C);
+	\path (B) edge (D);
+	\path (C) edge (E);
+	\path (D) edge (F);
+	\draw (E) edge (H);
+	\draw (H) edge (F);
+	\draw (J) edge (F);
+	\end{tikzpicture}  
+\end{center}
+\end{required}
+
+
+% Either type your answer in below, or uncomment the \includegraphics command
+% and use it to insert an approprate image. Try experimenting with the scale 
+% 0.9 the width option to resize your image if necessary.
+
+%\includegraphics[width=0.9\textwidth]{solution.jpg}
+
+\begin{proof}
+	DFS will start at node $s$. It will then exploit the first child node, $b$. While exploiting this node, it will search to node $d$ and finally to node $t$. This completes DFS traversal path from $s \to t$. We do not pop any nodes from the stack in this example, because in DFS we only pop to "go back" to visit unexplored nodes down a branch.\\
+The following table shows a path that traverses $s$ to $t$ that DFS finds and that is neither the shortest path nor the longest, simple path.\\
+	\begin{table}[h!]
+		\begin{center}
+			\caption{DFS Traversal and Stack Contents}
+			\label{tab:table1}
+			\begin{tabular}{l|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+				\textbf{Step} & \textbf{Stack Contents}\\
+				\hline
+				1 & $s$ \\
+				2 & $b$, $s$ \\
+				3 & $d$, $b$, $s$ \\
+				4 & $t$, $d$, $b$, $s$ \\
+			\end{tabular}
+		\end{center}
+	\end{table}
+\begin{enumerate}[label=(\alph*)]
+\item Here is the final path DFS finds:\\
+\begin{center}
+	\begin {tikzpicture}[semithick]
+	\tikzstyle{blue}=[circle ,top color =white , bottom color = processblue!20 ,draw,processblue , text=blue , minimum width =1 cm];
+	\tikzstyle{red}=[circle ,top color =white , bottom color = processred!20 ,draw, processred , text=blue , minimum width =1 cm];
+	\tikzstyle{green}=[circle ,top color =white , bottom color = processgreen!20 ,draw, processgreen , text=blue , minimum width =1 cm];
+	
+	\node[blue] (A) {$s$};
+	\node[blue] (B) [right = of A] {$b$};
+	\node[blue] (D) [right = of B] {$d$};
+	\node[blue] (F) [right = of D] {$t$};
+	
+	\path (A) edge (B);
+	\path (B) edge (D);
+	\path (D) edge (F);
+\end{tikzpicture}  
+\end{center}
+\item Here is a shorter $s \to t$ path: \\
+\begin{center}
+	\begin {tikzpicture}[semithick]
+	\tikzstyle{blue}=[circle ,top color =white , bottom color = processblue!20 ,draw,processblue , text=blue , minimum width =1 cm];
+	\tikzstyle{red}=[circle ,top color =white , bottom color = processred!20 ,draw, processred , text=blue , minimum width =1 cm];
+	\tikzstyle{green}=[circle ,top color =white , bottom color = processgreen!20 ,draw, processgreen , text=blue , minimum width =1 cm];
+	
+	\node[blue] (A) {$s$};
+	\node[blue] (B) [right = of A] {$h$};
+	\node[blue] (D) [right = of B] {$t$};
+	
+	\path (A) edge (B);
+	\path (B) edge (D);
+\end{tikzpicture}  
+\end{center}
+\item Here is a longer, simple $s \to t$ path: \\
+\begin{center}
+	\begin {tikzpicture}[semithick]
+	\tikzstyle{blue}=[circle ,top color =white , bottom color = processblue!20 ,draw,processblue , text=blue , minimum width =1 cm];
+	\tikzstyle{red}=[circle ,top color =white , bottom color = processred!20 ,draw, processred , text=blue , minimum width =1 cm];
+	\tikzstyle{green}=[circle ,top color =white , bottom color = processgreen!20 ,draw, processgreen , text=blue , minimum width =1 cm];
+	
+	\node[blue] (A) {$s$};
+	\node[blue] (B) [right = of A] {$c$};
+	\node[blue] (D) [right = of B] {$e$};
+	\node[blue] (C) [right = of D] {$f$};
+	\node[blue] (F) [right = of C] {$t$};
+	
+	\path (A) edge (B);
+	\path (B) edge (D);
+	\path (D) edge (C);
+	\path (C) edge (F);
+\end{tikzpicture}
+\end{center}
+\end{enumerate}
+\end{proof}
+
+
+%Include an Image: \includegraphics{ImageFileName}
+%Include an Image and Rotate 90 degree: \includegraphics[angle=90]{ImageFileName}
+%Include an Image, Rotate by 180 degrees, and scale by 50\% \includegraphics[scale=0.5, angle=90]{ImageFileName}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT
+
+
+

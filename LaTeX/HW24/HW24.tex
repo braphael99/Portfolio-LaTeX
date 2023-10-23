@@ -1,0 +1,212 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usetikzlibrary{positioning, automata, backgrounds}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{forest}
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+%\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newcommand{\interval}[4]{\draw (#2, #1) -- (#3, #1); % Usage: \interval{height}{start}{end}{label}
+\draw (#2, #1-0.11) -- (#2, #1+0.11); % draw left whisker
+\draw (#3, #1-0.11) -- (#3, #1+0.11); % draw right whisker
+\node[] at (#2-0.25, #1) {#4};
+}
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\title{
+\normalfont \normalsize
+\textsc{CSCI 3104 Spring 2023 \\
+Instructors: Ryan Layer and Chandra Kanth Nagesh} \\
+[10pt]
+\rule{\linewidth}{0.5pt} \\[6pt]
+\huge Homework 24 \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+\author{}
+\date{}
+\begin{document}
+
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.gif}
+\DeclareGraphicsExtensions{.jpg}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill April 13, 2023 \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Collaborators \dotfill \textbf{Alex Barry, Brody Cyphers, and Ben Kohav}
+
+\tableofcontents
+
+\section{Instructions}
+ \begin{itemize}
+	\item The solutions \textbf{should be typed}, using proper mathematical notation. We cannot accept hand-written solutions. \href{http://ece.uprm.edu/~caceros/latex/introduction.pdf}{Here's a short intro to \LaTeX.}
+	\item You should submit your work through the \textbf{class Gradescope page} only (linked from Canvas). Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You are welcome and encouraged to collaborate with your classmates, as well as consult outside resources. You must \textbf{cite your sources in this document.} \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\section{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+\newpage
+\section{Standard 24: Backtracking to find Solutions}
+\subsection{Problem \ref{DP1} (2 Points)}
+\begin{required} \label{DP1}
+Consider the \textsc{Knapsack} problem, with input $[ (2, 1), (3, 2), (1, 3), (5, 4),(4, 5)], W=10$. Here, each pair $(v_i, w_i)$ denotes an item with value $v_i$ and weight $w_i$. The following is the dynamic programming table for the optimum value. From the table, \textbf{clearly indicate the steps you take to backtrace to find the optimum knapsack.} Be sure to include the steps at which an item was \emph{not} chosen, as well as those at which it was chosen. That is, the number of steps your algorithm takes should be the same as the length of the list (5) (or maybe 6, depending on how you handle the last step). 
+
+
+\begin{tabular}{|r|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+         & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 &10\\ \hline
+       0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+(2, 1) 1 & 0 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2 & 2\\ \hline
+(3, 2) 2 & 0 & 2 & 3 & 5 & 5 & 5 & 5 & 5 & 5 & 5 & 5\\ \hline
+(1, 3) 3 & 0 & 2 & 3 & 5 & 5 & 5 & 6 & 6 & 6 & 6 & 6\\ \hline
+(5, 4) 4 & 0 & 2 & 3 & 5 & 5 & 7 & 8 & 10& 10& 10& 11\\ \hline
+(4, 5) 5 & 0 & 2 & 3 & 5 & 5 & 7 & 8 & 10& 10& 10& 11\\ \hline
+\end{tabular}
+
+\end{required}
+
+\begin{proof}[Answer]
+Step 1: $KP[5, 10] = max\{KP[4 , 10], 4 + KP[4, 5]\} = 11$. Item 5 is not considered.\\
+
+Step 2: $KP[4, 10] = max\{KP[3 , 10], 5 + KP[3, 6]\} = 11$. Item 4 is considered.\\
+
+Step 3: $KP[3, 6] = max\{KP[2 , 6], 1 + KP[2, 3]\} = 6$. Item 3 is considered.\\
+
+Step 4: $KP[2, 3] = max\{KP[1 , 3], 2 + KP[1, 1]\} = 5$. Item 2 is considered.\\
+
+Step 5: $KP[1, 1] = max\{KP[0 , 1], 2 + KP[0, 0]\} = 2$. Item 1 is considered.\\
+
+Step 6: $KP[0, 0] = 0$. Item 0 is considered.\\
+\end{proof}
+\newpage
+\subsection{Problem \ref{DP2} (2 Points)}
+\begin{required} \label{DP2}
+
+Consider the sequence alignment problem where the cost of {\em sub} and the cost of {\em indel} are all $1$. Given the following table of optimal cost of aligning the strings AACTGA and AAACTG, draw the backward path consisting of backward edges to find the minimal-cost set of edit operations that transforms AACTGA to AAACTG. Besides indicating the backward path, you must also give the minimal-cost set of edit operations.  Clearly explain your work.
+
+\begin{tabular}{|r|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+  &   & A & A & A & C & T & G \\ \hline
+  & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+A & 1 & 0 & 1 & 2 & 3 & 4 & 5 \\ \hline
+A & 2 & 1 & 0 & 1 & 2 & 3 & 4 \\ \hline
+C & 3 & 2 & 1 & 1 & 1 & 2 & 3 \\ \hline
+T & 4 & 3 & 2 & 2 & 2 & 1 & 2 \\ \hline
+G & 5 & 4 & 3 & 3 & 3 & 2 & 1 \\ \hline
+A & 6 & 5 & 4 & 3 & 4 & 3 & 2 \\ \hline
+\end{tabular}
+\end{required}
+
+\begin{proof}[Answer]
+Our backwards path will be the following:\\
+
+$(6,6) \text{ insert, delete} \to (6,5) \text{ insert} \to (5,4) \text{ insert} \to (4,3) \text{ insert} \to (3,2) \text{ insert} \to (2,2) \text{ no-op} \to (1,1) \text{ no-op} \to (0,0) \text{ no-op}$\\
+
+\noindent In order to get to AAACTG from AACTGA, the minimum operations are an insert of A between the second A and C and a delete of the A on the end of the string shown by $(6,6)$.\\
+In order to get to AAACTG from AACTG, we need to insert an A between the second A and C, shown by $(6,5)$.\\
+In order to get to AAACT from AACT, we need to insert an A between the second A and the C, shown by $(5,4)$.\\
+In order to get to AAAC from AAC, we need to insert an A between the second A and the C, shown by $(4,3)$.\\
+In order to get to AAA from AA, we need to insert a third A, shown by $(3,2)$.\\
+In order to get to AA from AA, we need a no-op, shown by $(2,2)$.\\
+In order to get to A from A, we need a no-op, shown by $(1,1)$.\\
+In order to get from an empty string to an empty string, we need a no-op, shown by $(0,0)$.\\
+
+\end{proof}
+
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT

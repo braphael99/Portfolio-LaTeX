@@ -1,0 +1,385 @@
+\documentclass[11pt]{article} 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{forest}
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\ 
+Instructors: Prof. Layer and Chandra Kanth Nagesh} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Homework 2 \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill February 2, 2023 \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Collaborators \dotfill \textbf{Brody Cyphers and Alex Barry}
+
+\tableofcontents
+
+\section{Instructions}
+ \begin{itemize}
+	\item The solutions \textbf{should be typed}, using proper mathematical notation. We cannot accept hand-written solutions. \href{http://ece.uprm.edu/~caceros/latex/introduction.pdf}{Here's a short intro to \LaTeX.}
+	\item You should submit your work through the \textbf{class Gradescope page} only (linked from Canvas). Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You are welcome and encouraged to collaborate with your classmates, as well as consult outside resources. You must \textbf{cite your sources in this document.} \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\section{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+
+%\begin{required}
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+%\end{required}
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+
+\newpage
+\section{Standard 2- BFS and DFS}
+\subsection{Problem \ref{DFS1} (1.5 points)}
+\begin{required} \label{DFS1}
+Consider the $\textsf{Connectivity}$ problem:
+\begin{itemize}
+\item \textsf{Instance:} Let $G(V, E)$ be a simple, undirected graph. Let $s, t \in V(G)$.
+\item \textsf{Decision:} Is there a path from $s$ to $t$ in $G$?
+\end{itemize}
+
+\noindent \\ Do the following. [\textbf{Note:} There are parts (a) and (b). Part (b) is on the next page.]
+\begin{enumerate}[label=(\alph*)]
+\item Design an algorithm to solve the $\textsf{Connectivity}$ problem. Your solution should provide enough detail that a CSCI 2270 student could reasonably be expected to implement your solution.
+\begin{proof}[Answer for Part (a)]
+Connectivity Problem\\
+\begin{verbatim}
+1: Start at node 's'
+2: Push node 's' into the queue
+3: Mark 's' as visited
+4: Pop from queue and visit the neighbors of 's'
+5: Push the neighbors of 's' into the queue if they have not been marked as visited yet
+6: Mark the neighbors of 's' as visited
+7: Continue procesing the neighbors of the neighbors of 's'
+8: Repeat until all nodes are marked as visited or we mark 't' as visited
+9: If 't' is visited, then we know that there is a path from 's' to 't'
+\end{verbatim}
+Since we marked both nodes $s$ and $t$ as visited in our search, we know there is a path from $s$ to $t$ so we have solved the connectivity problem.
+\end{proof}
+
+
+
+\newpage
+\item We say that the graph $G$ is \textit{connected} if for every pair of vertices $s, t \in V(G)$, there exists a path from $s$ to $t$. Design an algorithm to determine whether $G$ is connected. Your algorithm should only traverse the graph once- this means that you should \textbf{not} apply BFS or DFS more than once. Your solution should provide enough detail that a CSCI 2270 student could reasonably be expected to implement your solution.
+
+\begin{proof}[Answer for Part (b)]
+Is Graph $G$ connected?
+\begin{verbatim}
+	1: Begin at any node N
+	2: Put node N into the queue
+	3: Mark N as visited and iterate a node counting variable
+	4: Pop node N from the queue
+	5: Visit the neighbors of N
+	6: If the neighbors have not been visited, add them to the queue
+	7: Mark the neighbors in the queue as visited
+	8: Add to the counting variable the number of new nodes visited
+	9: Pop the neighbors from the queue
+	10: Continue visiting the neighbors of the neighbors until all nodes are marked as visited
+	11: Compare the counting variable to the total number of nodes in our graph
+	12: If these numbers are equal then we have determined that the graph is connected
+\end{verbatim}
+If the counting variable and number of nodes are equal then we have determined the graph is connected since all nodes were visited. This implies there is at least one path that can get us from one node to any other node.
+\end{proof}
+\end{enumerate}
+\end{required}
+
+
+
+
+
+
+\newpage
+\subsection{Problem \ref{DFS2} (1 point)} 
+\begin{required} \label{DFS2}
+Give an example of a simple, undirected, and unweighted graph $G(V, E)$ that has a single source shortest path tree which a \textbf{depth-first traversal} will not return for any ordering of its vertices. 
+    Your answer must
+    \begin{enumerate}[label=(\alph*)]
+    	\item Provide a drawing of the graph $G$. [\textbf{Note:} We have provided TikZ code below if you wish to use \LaTeX \ to draw the graph. Alternatively, you may hand-draw $G$ and embed it as an image below, provided that (i) your drawing is legible and (ii) we do not have to rotate our screens to grade your work.]
+    	\item Specify the single source shortest path tree $T = (V,E_T)$ by specifying $E_T$ and also specifying the root $s \in V$. [\textbf{Note:} You may again hand-draw this tree. If you wish, you may clearly mark the edges of $T$ on your drawing of $G$. Please make it easy on the graders to identify the edges of $T$.] 
+    	\item Include a clear explanation of why the depth-first search algorithm we discussed in class will never produce $T$ for any orderings of the vertices.
+    \end{enumerate}
+
+\end{required}
+
+\noindent 
+\begin{proof}
+\begin{enumerate}[label = (\alph*)]
+\item Graph $G$
+\begin{center}
+	\begin{tikzpicture}[
+		wide/.style={line width=4pt},
+		every node/.style={circle,draw,minimum size=16},
+		scale=2]
+		\node (s) at (-0.5,0)            {$s$};
+		\node (u) at ($ (0,0) + ( 60:1)$) {$u$};
+		\node (v) at ($ (0,0) + (-60:1)$) {$v$};
+		\node (w) at ($ (u) + ( 1.5,0 )$) {$w$};
+		\node (x) at ($ (v) + ( 1.5,0 )$) {$x$};
+		\node (t) at ($ (w) + (-60:1) + (0.5,0)$) {$t$};
+		\draw (s) -- (u);
+		\draw (u) -- (w);
+		\draw (w) -- (t);
+
+% Replace the line \draw (w) -- (t); with the line below (after deleting the % symbol to uncomment) in order to draw a thicker edge.
+%		\draw[line width=3pt] (w) -- (t);
+
+
+		\draw (s) -- (v);
+		\draw (v) -- (x);
+		\draw (x) -- (t);
+		\draw (u) -- (x);
+		\draw (v) -- (w);
+		
+\end{tikzpicture}
+\end{center}
+\item The single shortest path tree $T$ on graph $G$ will be the following:
+\begin{center}
+	\begin{tikzpicture}[
+		wide/.style={line width=4pt},
+		every node/.style={circle,draw,minimum size=16},
+		scale=2]
+		\node (s) at (-0.5,0)            {$s$};
+		\node (u) at ($ (0,0) + ( 60:1)$) {$u$};
+		\node (v) at ($ (0,0) + (-60:1)$) {$v$};
+		\node (w) at ($ (u) + ( 1.5,0 )$) {$w$};
+		\node (x) at ($ (v) + ( 1.5,0 )$) {$x$};
+		\node (t) at ($ (w) + (-60:1) + (0.5,0)$) {$t$};
+		\draw[color=red] (s) -- (u);
+		\draw[color=red] (u) -- (w);
+		\draw[color=red] (w) -- (t);
+		
+		% Replace the line \draw (w) -- (t); with the line below (after deleting the % symbol to uncomment) in order to draw a thicker edge.
+		%		\draw[line width=3pt] (w) -- (t);
+		
+		
+		\draw[color=red] (s) -- (v);
+		\draw (v) -- (x);
+		\draw (x) -- (t);
+		\draw[color=red] (u) -- (x);
+		\draw (v) -- (w);
+		
+	\end{tikzpicture}
+\end{center}
+\item DFS will not produce $T$ because it will never process both neighbor nodes of root $s$ first, instead opting to exploit one of the neighbor nodes until it reaches a visited node or a node that does not have any more neighbors.
+\end{enumerate}
+\end{proof}
+
+
+
+
+
+\newpage
+\subsection{Problem \ref{DFS4} (1.5 points)}
+\begin{required} \label{DFS4}
+	Give an example of a simple, undirected, weighted graph such that a breadth-first traversal outputs a search-tree that is not a single source shortest path tree. (That is, BFS is not sufficiently powerful to solve the shortest-path problem on weighted graphs. This motivates Dijkstra's algorithm, which will be discussed in the near future.) 
+	Your answer must
+	\begin{enumerate}[label=(\alph*)]
+		\item Draw the graph $G = (V,E, w)$ by specifying $V$ and $E$, clearly labeling the edge weights.  [\textbf{Note:} We have provided TikZ code below if you wish to use \LaTeX \ to draw the graph. Alternatively, you may hand-draw $G$ and embed it as an image below, provided that (i) your drawing is legible and (ii) we do not have to rotate our screens to grade your work.]
+		\item Specify a spanning tree $T(V, E_{T})$ that is returned by BFS, but is not a single-source shortest path tree. [\textbf{Note:} You may again hand-draw this tree. If you wish, you may clearly mark the edges of $T$ on your drawing of $G$. Please make it easy on the graders to identify the edges of $T$.] 
+
+		\item Specify a valid single-source shortest path tree $T^{\prime} = (V,E_{T^{\prime}})$.  [\textbf{Note:} You may again hand-draw this tree. If you wish, you may clearly mark the edges of $T$ on your drawing of $G$. Please make it easy on the graders to identify the edges of $T$.] 
+
+		\item Include a clear explanation of why the search-tree output by breadth-first search is not a valid single-source shortest path tree of $G$.
+	\end{enumerate}
+\end{required}
+
+
+\begin{proof}
+
+
+\begin{enumerate}[label = (\alph*)]
+\item Graph $G$
+
+\begin{center}
+	\begin{tikzpicture}[
+		wide/.style={line width=4pt},
+		every node/.style={circle,draw,minimum size=16},
+		scale=2]
+		\node (s) at (-0.5,0)            {$s$};
+		\node (u) at ($ (0,0) + ( 60:1)$) {$u$};
+		\node (v) at ($ (0,0) + (-60:1)$) {$v$};
+		\node (w) at ($ (u) + ( 1.5,0 )$) {$w$};
+		\node (x) at ($ (v) + ( 1.5,0 )$) {$x$};
+		\node (t) at ($ (w) + (-60:1) + (0.5,0)$) {$t$};
+
+
+% Replace the line \draw (w) -- (t); with the line below (after deleting the % symbol to uncomment) in order to draw a thicker edge.
+%		\draw[line width=3pt] (w) -- (t);
+
+
+		\draw (s) -- node[below, draw=none,fill=none]{8} (v);
+		\draw (v) -- node[below, draw=none,fill=none]{1} (x);
+		\draw (x) -- node[below, draw=none,fill=none]{1} (t);
+		\draw (u) -- node[above, draw=none,fill=none]{8} (x);    
+		\draw (v) -- node[below, draw=none,fill=none]{1} (w);
+		\draw (s) -- node[above, draw=none,fill=none]{1} (u);
+		\draw (u) -- node[above, draw=none,fill=none]{1} (w);
+		\draw (w) -- node[above, draw=none,fill=none]{2} (t);		
+\end{tikzpicture}
+\end{center}
+
+\item Spanning tree $T$ returned by BFS:\\
+\begin{center}
+	\begin{tikzpicture}[
+		wide/.style={line width=4pt},
+		every node/.style={circle,draw,minimum size=16},
+		scale=2]
+		\node (s) at (-0.5,0)            {$s$};
+		\node (u) at ($ (0,0) + ( 60:1)$) {$u$};
+		\node (v) at ($ (0,0) + (-60:1)$) {$v$};
+		\node (w) at ($ (u) + ( 1.5,0 )$) {$w$};
+		\node (x) at ($ (v) + ( 1.5,0 )$) {$x$};
+		\node (t) at ($ (w) + (-60:1) + (0.5,0)$) {$t$};
+		
+		
+		% Replace the line \draw (w) -- (t); with the line below (after deleting the % symbol to uncomment) in order to draw a thicker edge.
+		%		\draw[line width=3pt] (w) -- (t);
+		
+		
+		\draw[color=red] (s) -- node[below, draw=none,fill=none]{8} (v);
+		\draw (v) -- node[below, draw=none,fill=none]{1} (x);
+		\draw (x) -- node[below, draw=none,fill=none]{1} (t);
+		\draw[color=red] (u) -- node[above, draw=none,fill=none]{8} (x);    
+		\draw (v) -- node[below, draw=none,fill=none]{1} (w);
+		\draw[color=red] (s) -- node[above, draw=none,fill=none]{1} (u);
+		\draw[color=red] (u) -- node[above, draw=none,fill=none]{1} (w);
+		\draw[color=red] (w) -- node[above, draw=none,fill=none]{2} (t);		
+	\end{tikzpicture}
+\end{center}
+
+\item Valid single-source shortest path tree $T^{\prime}$:\\
+
+\begin{center}
+	\begin{tikzpicture}[
+		wide/.style={line width=4pt},
+		every node/.style={circle,draw,minimum size=16},
+		scale=2]
+		\node (s) at (-0.5,0)            {$s$};
+		\node (u) at ($ (0,0) + ( 60:1)$) {$u$};
+		\node (v) at ($ (0,0) + (-60:1)$) {$v$};
+		\node (w) at ($ (u) + ( 1.5,0 )$) {$w$};
+		\node (x) at ($ (v) + ( 1.5,0 )$) {$x$};
+		\node (t) at ($ (w) + (-60:1) + (0.5,0)$) {$t$};
+		
+		
+		% Replace the line \draw (w) -- (t); with the line below (after deleting the % symbol to uncomment) in order to draw a thicker edge.
+		%		\draw[line width=3pt] (w) -- (t);
+		
+		
+		\draw (s) -- node[below, draw=none,fill=none]{8} (v);
+		\draw (v)[color=red] -- node[below, draw=none,fill=none]{1} (x);
+		\draw (x)[color=red] -- node[below, draw=none,fill=none]{1} (t);
+		\draw (u) -- node[above, draw=none,fill=none]{8} (x);    
+		\draw (v) -- node[below, draw=none,fill=none]{1} (w);
+		\draw[color=red] (s) -- node[above, draw=none,fill=none]{1} (u);
+		\draw[color=red] (u) -- node[above, draw=none,fill=none]{1} (w);
+		\draw[color=red] (w) -- node[above, draw=none,fill=none]{2} (t);		
+	\end{tikzpicture}
+\end{center}
+
+\item The search-tree provided by BFS is not a valid single-source path tree because, while providing us with the shortest amount of "hops" from start node to end, by adding the weights, we see this is not our shortest path. We get a path with weight 20 where the valid single-shortest path tree provides us a path with weight 6.
+\end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT

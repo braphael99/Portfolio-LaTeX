@@ -1,0 +1,259 @@
+\documentclass[11pt]{article} 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+\newtheorem*{requiredHC}{Problem HC}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\ 
+Instructors: Prof. Ryan Layer and Chandra Kanth Nagesh} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Quiz 7 Standard 7 - Prims's and Kruskal's Algorithm \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{Your Name}
+\date{}
+
+\begin{document}
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.gif}
+\DeclareGraphicsExtensions{.jpg}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill TODO \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Quiz Code (enter in Canvas to get access to the LaTeX template) \dotfill \textbf{FWERT}
+
+
+\tableofcontents
+
+\section*{Instructions}
+\addcontentsline{toc}{section}{Instructions}
+ \begin{itemize}
+	\item You may either type your work using this template, or you may handwrite your work and embed it as an image in this template. \textbf{If you choose to handwrite your work, the image must be legible, and oriented so that we do not have to rotate our screens to grade your work.} We have included some helpful LaTeX commands for including and rotating images commented out near the end of the LaTeX template.
+	\item You should submit your work through the \textbf{class Gradescope page} only. Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You \textbf{may not collaborate with other students}. \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Discord, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\newpage
+\section*{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+\addcontentsline{toc}{section}{Honor Code (Make Sure to Virtually Sign)}
+\hypertarget{HonorCode}{}
+
+\begin{requiredHC}
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+\end{requiredHC}
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+
+
+\newpage
+\setcounter{section}{6}
+\section{Standard 7: Prim's and Kruskal's Algorithm (4 points)}
+
+\setcounter{required}{6}
+\begin{required} 
+Consider the following graph $G(V, E, w)$. You should:
+\begin{itemize}
+\item Clearly indicate the order in which \textbf{Prim's algorithm} adds the edges to the minimum-weight spanning tree starting from \textbf{Vertex B} and explain the reasoning at each iteration.
+\end{itemize}
+
+\begin{center}
+\begin {tikzpicture}[semithick]
+\tikzstyle{blue}=[circle ,top color =white , bottom color = processblue!40 ,draw,processblue , text=blue , minimum width =1 cm];
+\tikzstyle{red}=[circle ,top color =white , bottom color = processred!20 ,draw, processred , text=blue , minimum width =1 cm];
+\tikzstyle{green}=[circle ,top color =white , bottom color = processgreen!20 ,draw, processgreen , text=blue , minimum width =1 cm];
+	\node[blue] (A) {$A$};
+	\node[blue] (B) [above right = of A] {$B$};
+	\node[blue] (C) [below right = of A] {$C$};
+	\node[blue] (D) [right = of B] {$D$};
+	\node[blue] (E) [right = of C] {$E$};
+	\node[blue] (F) [below right = of D] {$F$};
+	\node[blue] (G) [below right = of F] {$G$};
+	\node[blue] (H) [below left = of A] {$H$};
+	
+	\path (A) edge node[above] {$4$} (B);
+	\path (A) edge node[right] {$3$} (C);
+	\path (B) edge node[left] {$5$} (C);
+	\path (B) edge node[above] {$6$} (D);
+	\path (C) edge node[above] {$7$} (E);
+	\path (E) edge node[right] {$1$} (D);
+	\path (D) edge node[above] {$8$} (F);
+	\path (E) edge node[below] {$2$} (F);
+	\path (H) edge node[below] {$10$} (A);
+	\path (B) edge [bend right=45] node[above] {$13$} (H);
+	\path (D) edge [bend left=45] node[above] {$12$} (G);
+	\path (E) edge [below] node[above] {$15$} (G);
+	\end{tikzpicture}  
+\end{center}
+\end{required}
+
+
+\begin{proof}[Answer]
+Prim's algorithm starting at vertex $B$ will add the edges in the following order:\\
+1: $\{B, A\}$ because this is the minimum weight edge that can be added as a child of $B$ and still maintain the properties of MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already.\\
+2: $\{A, C\}$ because this is the next minimum weight edge that can be added while maintaining the properties of MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already, and being an offspring of $B$.\\
+3: $\{B, D\}$ because this is the next minimum weight edge that can be added while maintaining the properties of MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already, and being an offspring of $B$.\\
+4: $\{D, E\}$ because this is the next minimum weight edge that can be added while maintaining the properties of MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already, and being an offspring of $B$.\\
+5: $\{E, F\}$ because this is the next minimum weight edge that can be added while maintaining the properties of MST and being an offspring of $B$.\\
+6: $\{A, H\}$ because this is the next minimum weight edge that can be added while maintaining the properties of MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already, and being an offspring of $B$.\\
+7: $\{D, G\}$ because this is the next minimum weight edge that can be added while maintaining the properties of MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already, and being an offspring of $B$.\\
+\end{proof}
+
+\vspace*{10em}
+\setcounter{required}{7}
+\begin{required} 
+Consider the following graph $G(V, E, w)$. You should:
+\begin{itemize}
+\item Clearly indicate the order in which \textbf{Kruskal's algorithm} adds the edges to the minimum-weight spanning tree and explain the reasoning at each iteration.
+\end{itemize}
+
+\begin{center}
+\begin {tikzpicture}[semithick]
+\tikzstyle{blue}=[circle ,top color =white , bottom color = processblue!40 ,draw,processblue , text=blue , minimum width =1 cm];
+\tikzstyle{red}=[circle ,top color =white , bottom color = processred!20 ,draw, processred , text=blue , minimum width =1 cm];
+\tikzstyle{green}=[circle ,top color =white , bottom color = processgreen!20 ,draw, processgreen , text=blue , minimum width =1 cm];
+
+	\node[blue] (A) {$A$};
+	\node[blue] (B) [above right = of A] {$B$};
+	\node[blue] (C) [below right = of A] {$C$};
+	\node[blue] (D) [right = of B] {$D$};
+	\node[blue] (E) [right = of C] {$E$};
+	\node[blue] (F) [below right = of D] {$F$};
+	\node[blue] (G) [below right = of F] {$G$};
+	\node[blue] (H) [below left = of A] {$H$};
+
+	\path (A) edge node[above] {$13$} (B);
+	\path (A) edge node[right] {$1$} (C);
+	\path (B) edge node[left] {$5$} (C);
+	\path (B) edge node[above] {$9$} (D);
+	\path (C) edge node[above] {$8$} (E);
+	\path (E) edge node[right] {$3$} (D);
+	\path (D) edge node[above] {$7$} (F);
+	\path (E) edge node[below] {$10$} (F);
+	\path (H) edge node[below] {$2$} (A);
+	\path (B) edge [bend right=45] node[above] {$4$} (H);
+	\path (D) edge [bend left=45] node[above] {$15$} (G);
+	\path (E) edge [below] node[above] {$12$} (G);
+	\end{tikzpicture}  
+\end{center}
+\end{required}
+
+
+\begin{proof}[Answer]
+Kruskal's algorithm adds the edges in the following order:\\
+1: $\{A, C\}$ because this is the minimum weight edge we can add while still maintaining the properties of a MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already.\\
+2: $\{H, A\}$ because this is the minimum weight edge we can add while still maintaining the properties of a MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already.\\
+3: $\{D, E\}$ because this is the minimum weight edge we can add while still maintaining the properties of a MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already.\\
+4: $\{H, B\}$ because this is the minimum weight edge we can add while still maintaining the properties of a MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already.\\
+5: $\{D, F\}$ because this is the minimum weight edge we can add while still maintaining the properties of a MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already.\\
+6: $\{C, E\}$ because this is the minimum weight edge we can add while still maintaining the properties of a MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already.\\
+7: $\{E, G\}$ because this is the minimum weight edge we can add while still maintaining the properties of a MST as in not creating a cycle or having a path between the nodes this edge is connecting existing already.\\
+\end{proof}
+
+% Either type your answer in above, or uncomment the \includegraphics command
+% and use it to insert an approprate image. Try experimenting with the scale 
+% 0.9 the width option to resize your image if necessary.
+
+%\includegraphics[width=0.9\textwidth]{solution.jpg}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT
+
+
+

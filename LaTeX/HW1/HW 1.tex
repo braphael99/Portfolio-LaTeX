@@ -1,0 +1,309 @@
+\documentclass[11pt]{article} 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{forest}
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\ 
+Instructors: Prof. Layer and Chandra Kanth Nagesh} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Homework 1 \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill February 2, 2023 \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Collaborators \dotfill \textbf{Brody Cyphers and Alex Barry}
+
+\tableofcontents
+
+\section{Instructions}
+ \begin{itemize}
+	\item The solutions \textbf{should be typed}, using proper mathematical notation. We cannot accept hand-written solutions. \href{http://ece.uprm.edu/~caceros/latex/introduction.pdf}{Here's a short intro to \LaTeX.}
+	\item You should submit your work through the \textbf{class Gradescope page} only (linked from Canvas). Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You are welcome and encouraged to collaborate with your classmates, as well as consult outside resources. You must \textbf{cite your sources in this document.} \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\section{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+
+%\begin{required}
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+%\end{required}
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+
+
+\newpage
+\section{Standard 1: Proof by Induction}
+
+\subsection{Problem \ref{Induction1} (1 point)}
+\begin{required} \label{Induction1}
+A student is trying to prove by induction that $4^{n} < n!$ for $n \geq 9$. 
+
+\begin{proof}[Student's Proof]
+The proof is by induction on $n \geq 9$. 
+\begin{itemize}
+\item \textbf{Base Case:} When $n = 9$, we have that:
+\begin{align*}
+4^{9} &= 262,144 \\
+&\leq 362,880 \\
+&= 9!
+\end{align*}
+
+\item \textbf{Inductive Hypothesis:} Now suppose that for all $k \geq 9$ we have that $4^{k} < k!$. 
+
+\item \textbf{Inductive Step:} We now consider the $k+1$ case. As $k+1 > 9$, we have from the inductive hypothesis that $4^{k+1} < (k+1)!$. The result follows by induction.
+\end{itemize}
+\end{proof}
+
+There are two errors in this proof. 
+\begin{enumerate}[label=(\alph*)]
+\item The Inductive Hypothesis is not correct. Write an explanation to the student explaining why their Inductive Hypothesis is not correct. [\textbf{Note:} You are being asked to explain why the Inductive Hypothesis is wrong, and \textbf{not} to rewrite a corrected Inductive Hypothesis.]
+
+
+\begin{proof}
+The wording is not correct. We need the phrasing, "Assume that $P(k)$ for all $k$ is true". We also need to make sure that $k$ is defined within the same set as $n$ (Natural numbers).
+\end{proof}
+
+
+
+\vskip 15pt
+\item The Inductive Step is not correct. Write an explanation to the student explaining why their Inductive Step is not correct. [\textbf{Note:} You are being asked to explain why the Inductive Step is wrong, and \textbf{not} to rewrite a corrected Inductive Step.]
+
+\begin{proof}
+The wording is also incorrect here. We need the phrasing, "Show that $k + 1$ ...". After this phrasing, the student needs to now use algebra to prove that this statement holds true by using the assumption made in the inductive hypothesis. Here they only state that it holds by induction and the inductive hypothesis which is not a sufficient answer.
+\end{proof}
+\end{enumerate}
+\end{required}
+
+\newpage
+\subsection{Problem \ref{Induction2} (1 point)} 
+\begin{required} \label{Induction2}
+Consider the recurrence relation, defined as follows:
+\[
+T_{n} = \begin{cases} 1 & : n = 0, \\
+11 & : n = 1, \\
+T_{n-1} + 12 T_{n-2} & : n \geq 2.
+\end{cases}
+\]
+
+\noindent Prove by induction that $T_{n} = (-1) \cdot (-3)^{n} + 2 \cdot (4)^{n}$, for all integers $n \in \mathbb{N}$. [\textbf{Recall:} $\mathbb{N} = \{0, 1, 2, \ldots \}$ is the set of non-negative integers.]
+\end{required}
+
+\begin{proof}.\\
+\indent \textbf{Base Case:}
+Let $P(n) = T_{n} = (-1) \cdot (-3)^{n} + 2 \cdot (4)^{n}$ (Given) \\
+\indent $P(0) = 1$ (Given) \\
+\indent $P(1) = 11$ (Given) \\
+\indent $P(2) = (-1) \cdot (-3)^{2} + 2 \cdot (4)^{2} = 23 = 11 + 12(1) = 23$ \\
+
+\textbf{Inductive Hypothesis:}
+Assume that for all $k \in \mathbb{N}$, $T_{k} = (-1) \cdot (-3)^{k} + 2 \cdot (4)^{k}$ holds true.\\
+
+\textbf{Inductive Step:}
+Show that $T_{k+1} = (-1) \cdot (-3)^{k+1} + 2 \cdot (4)^{k+1}$\\
+
+\begin{align*}
+	T_{k+1} &= T_{k} + 12T_{k-1}\\
+	&= (-1) \cdot (-3)^{k} + 2 \cdot (4)^k + 12((-1)\cdot(-3)^{k-1} + 2 \cdot 4^{k-1})\\
+	&= (-1) \cdot (-3)^k + 2 \cdot 4^k + 12((-1) \cdot (-3)^k(-3)^{-1} + 2(4^k)\cdot(4^{-1}))\\
+	&= (-1) \cdot (-3)^k + 2 \cdot (4)^k + 12(-\frac{1}{3})(-1)\cdot(-3)^k + 12(\frac{1}{4})\cdot(2)\cdot(4)^k\\
+	&=(-1)\cdot(-3)^k + 2 \cdot (4)^k + 4\cdot(-3)^k + 6 \cdot(4)^k\\
+	&= -1 \cdot (-3)^k + 4 (-3)^k + 6(4)^k\\
+	&= 3(-3)^k + 8(4)^k\\
+	&= (-1)(-3)(-3)^k + 2(4)(4)^k\\
+	&=(-1)(-3)^{k+1} + 2(4)^{k+1}\\
+	&= T_{k+1}\\
+\end{align*}
+So $T_{k+1} = (-1) \cdot (-3)^{k+1} + 2 \cdot (4)^{k+1}$ by Induction and the recurrence relation.\\
+\end{proof}
+
+
+\newpage
+\subsection{Problem \ref{Induction3} (2 points)}
+\begin{required} \label{Induction3}
+The complete, balanced ternary tree of depth $d$, denoted $\mathcal{T}(d)$, is defined as follows. 
+\begin{itemize}
+\item $\mathcal{T}(0)$ consists of a single vertex.
+\item For $d > 0$, $\mathcal{T}(d)$ is obtained by starting with a single vertex and setting each of its three children to be copies of $\mathcal{T}(d-1)$.
+\end{itemize}
+
+\noindent Prove by induction that $\mathcal{T}(d)$ has $3^{d}$ leaf nodes. To help clarify the definition of $\mathcal{T}(d)$, illustrations of $\mathcal{T}(0), \mathcal{T}(1)$, and $\mathcal{T}(2)$ are on the next page. [\textbf{Note:} $\mathcal{T}(d)$ is a tree and \textbf{not} the number of leaves on the tree. Avoid writing $\mathcal{T}(d) = 3^{d}$, as these data types are incomparable: a tree is not a number.]
+\end{required}
+
+\begin{proof}.\\
+\indent \textbf{Base Case:}
+Let $P(n) = \mathcal{T}(d)$ having $3^{d}$ leaf nodes.\\
+\indent $P(0) = 3^0 = 1$ so $\mathcal{T}(0)$ has 1 leaf node. (Given)\\
+\indent $P(1) = 3^1 = 3$ so $\mathcal{T}(1)$ has 3 leaf nodes. (Given)\\
+
+\textbf{Inductive Hypothesis:} Assume that all trees $\mathcal{T}(k)$ has $3^k$ leaf nodes.\\
+
+\textbf{Inductive Step:} Show that $\mathcal{T}(k + 1)$ has $3^{k+1}$ leaf nodes.\\
+\indent Consider the tree $\mathcal{T}(k + 1)$.\\ 
+\indent It is given that $\mathcal{T}(d)$ is obtained by setting each of its 3 children to be copies of $\mathcal{T}(d-1)$.\\
+\indent We know from Inductive Hypothesis that $\mathcal{T}(k)$ has $3^k$ nodes.\\
+\indent We also know that $\mathcal{T}(k)$ is $\mathcal{T}(d-1)$ of $\mathcal{T}(k+1)$.\\
+\indent So we know that since $\mathcal{T}(k+1)$ is obtained by setting 3 copies of children of $\mathcal{T}(k)$.\\
+\indent This gives us $3^k \cdot 3$ leaf nodes which equals $3^{k+1}$, proving that $\mathcal{T}(k+1)$ has $3^{k+1}$ leaf nodes by induction.
+
+\end{proof}
+
+\newpage
+\begin{ex}
+We have the following:
+
+\begin{center}
+\begin{forest}
+    for tree={
+        circle,
+        draw,
+        fill,
+        minimum width=2pt, % size
+        inner sep=0pt,
+        parent anchor=center,
+        child anchor=center,
+        s sep+=25pt, % distance between children
+    }
+[  ]
+\end{forest}
+\noindent \\ $\mathcal{T}(0)$.
+\end{center}
+
+\begin{center}
+\begin{forest}
+    for tree={
+        circle,
+        draw,
+        fill,
+        minimum width=2pt, % size
+        inner sep=0pt,
+        parent anchor=center,
+        child anchor=center,
+        s sep+=25pt, % distance between children
+    }
+[ [] [] [] ]
+\end{forest}
+\noindent \\ $\mathcal{T}(1)$.
+\end{center}
+
+
+\begin{center}
+\begin{forest}
+    for tree={
+        circle,
+        draw,
+        fill,
+        minimum width=2pt, % size
+        inner sep=0pt,
+        parent anchor=center,
+        child anchor=center,
+        s sep+=25pt, % distance between children
+    }
+[ [[] [][]] [[] [][]] [[] [][]]  ]
+\end{forest}
+\noindent \\ $\mathcal{T}(2)$.
+\end{center}
+\end{ex}
+
+
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT
+
+
+

@@ -1,0 +1,4 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{Instructions}{1}{section*.2}%
+\contentsline {section}{Honor Code (Make Sure to Virtually Sign)}{2}{section*.3}%
+\contentsline {section}{\numberline {25}Standard 25: Dynamic Programming: Design a Dynamic Programming Algorithm}{3}{section.25}%

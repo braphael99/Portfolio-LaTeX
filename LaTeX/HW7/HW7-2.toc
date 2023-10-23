@@ -1,0 +1,7 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Instructions}{1}{section.1}%
+\contentsline {section}{\numberline {2}Honor Code (Make Sure to Virtually Sign)}{2}{section.2}%
+\contentsline {section}{\numberline {3}Standard 7: Kruskal's MST Algorithm}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.2}Problem \ref {MST_Kruskal} (2 points)}{3}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Standard 7: Prim's MST Algorithm}{4}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Problem \ref {MST_Priml} (2 points)}{4}{subsection.4.1}%

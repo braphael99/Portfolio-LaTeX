@@ -1,0 +1,7 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Instructions}{1}{section.1}%
+\contentsline {section}{\numberline {2}Honor Code (Make Sure to Virtually Sign)}{2}{section.2}%
+\contentsline {section}{\numberline {3}Standard 2- BFS and DFS}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Problem \ref {DFS1} (1.5 points)}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Problem \ref {DFS2} (1 point)}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Problem \ref {DFS4} (1.5 points)}{6}{subsection.3.3}%

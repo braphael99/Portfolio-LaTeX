@@ -1,0 +1,271 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usetikzlibrary{positioning, automata, backgrounds}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{forest}
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+%\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newcommand{\interval}[4]{\draw (#2, #1) -- (#3, #1); % Usage: \interval{height}{start}{end}{label}
+\draw (#2, #1-0.11) -- (#2, #1+0.11); % draw left whisker
+\draw (#3, #1-0.11) -- (#3, #1+0.11); % draw right whisker
+\node[] at (#2-0.25, #1) {#4};
+}
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\ 
+Instructors: Ryan Layer and Chandra Kanth Nagesh} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Homework 19 \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+\author{}
+\date{}
+
+\begin{document}
+
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.gif}
+\DeclareGraphicsExtensions{.jpg}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill March 23, 2023 \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Collaborators \dotfill \textbf{Alex Barry, Brody Cyphers, and Ben Kohav}
+
+\tableofcontents
+
+\section{Instructions}
+ \begin{itemize}
+	\item The solutions \textbf{should be typed}, using proper mathematical notation. We cannot accept hand-written solutions. \href{http://ece.uprm.edu/~caceros/latex/introduction.pdf}{Here's a short intro to \LaTeX.}
+	\item You should submit your work through the \textbf{class Gradescope page} only (linked from Canvas). Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You are welcome and encouraged to collaborate with your classmates, as well as consult outside resources. You must \textbf{cite your sources in this document.} \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\section{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+
+\begin{proof}[Agreed (I agree to the above, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+\newpage
+\section{Standard 19: Mergesort}
+\subsection{Problem \ref{mergetime} (0.5 Points)}
+\begin{required}\label{mergetime}
+Write down a recurrence relation that models the running time of Mergesort and give its asymptotic solution.
+
+\begin{proof}[Answer]
+% YOUR ANSWER BELOW
+\begin{align*}
+T(n) = \begin{cases}
+\Theta(1) & : n \leq 1, \\
+2T(n/2) + \Theta(n) & : n > 1.
+\end{cases}
+\end{align*}
+We find that we have $\frac{n}{2^i} \cdot 2^i $\\
+We then find that $k = \log_2(n)$\\
+We then find $T(n) = \displaystyle\sum_{i=0} ^{\log_2(n)} n$ \\
+So, $T(n) = n\log_2(n)$ and $T(n) \in \Theta(n\log n)$\\
+
+
+\end{proof}
+\end{required}
+
+\newpage 
+\subsection{Problem \ref{modmergetime1} (1 Point)}
+\begin{required}\label{modmergetime1}
+Consider a modified Mergesort algorithm that at each recursion splits an array of size $n$ into two subarrays of sizes $n/5$ and $4n/5$, respectively. Write down a recurrence relation for this modified Merge-Sort algorithm and give its asymptotic solution.
+
+\begin{proof}[Answer]
+% YOUR 
+\begin{align*}
+T(n) = \begin{cases}
+\Theta(1) & : n \leq 1, \\
+T(n/5) + T(4n/5) + \Theta(n) & : n > 1.
+\end{cases}
+\end{align*}
+
+\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{level 1}=[sibling distance=50mm]
+		\tikzstyle{level 2}=[sibling distance=25mm]
+		\node {$n$}
+		child {node {$n/5$}
+			child {node{$n/5^2$}}
+			child {node{$4n/5^2$}}}
+		child {node{$4n/5$}
+			child{node{$4n/5^2$}}
+			child{node{$4^2n/5^2$}}};
+	\end{tikzpicture}\\
+\end{center}
+
+At level $i$, we see that:
+\begin{align*}
+	\frac{4}{5}^in &= 1\\
+	\frac{4}{5}^i &= \frac{1}{n}\\
+	\log(\frac{4}{5})^i &= \log(\frac{1}{n})\\
+	x &= \log_2n\\
+	i &= \log_{\frac{5}{4}}n\\
+\end{align*}
+
+So $T(n) \in \Theta(n \log n)$\\
+
+
+\end{proof}
+\end{required}
+
+\newpage 
+\subsection{Problem \ref{modmergetime2} (1 Point)}
+\begin{required}\label{modmergetime2}
+Consider a modified Mergesort algorithm that at each recursion splits an array of size $n$ into two subarrays of sizes $2$ and $n-2$, respectively. Write down a recurrence relation for this modified Merge-Sort algorithm and give its asymptotic solution.
+
+\begin{proof}[Answer]
+% YOUR ANSWER BELOW
+\begin{align*}
+T(n) = \begin{cases}
+\Theta(1) & : n \leq 1, \\
+T(2) + T(n-2) + \Theta(n) & : n > 1.
+\end{cases}
+\end{align*}
+
+\begin{align*}
+	T(n) &= T(n-4) + \Theta(n-2) + \Theta(n))\\
+	&= T(n - 6) + \Theta(n - 4) + \Theta(n - 2) + \Theta(n)\\
+	&= T(n - 2k) + \Theta(n - (2k - 2)) + ... + \Theta(n)
+\end{align*}\\
+
+So $T(n) \in \Theta(n^2)$
+\end{proof}
+\end{required}
+
+\newpage
+\subsection{Problem \ref{mergespace} (1.5 Points)}
+\begin{required}\label{mergespace}
+While we have focused on runtime analysis, we are also concerned with the amount of space an algorithm uses. Space analysis is very similar to time analysis in that we only care about dynamic data structures (e.g., list size $n$), we ignore literals (e.g., ints), and we report the total space used with respect to the input size (e.g., $O(n)$).
+
+What is the space used by the Mergsort implementation below? (Hint: The total space an algorithm uses is the sum of the space used by all of its subproblems.)
+
+\begin{verbatim}
+def merge(A, B):
+    a = 0
+    b = 0
+    R = []
+
+    while a < len(A) or b < len(B):
+        if a == len(A) or (b < len(B) and A[a] >= B[b]):
+            R.append(B[b])
+            b+=1
+        else:
+            R.append(A[a])
+            a+=1
+
+    return R
+
+def mergesort(L):
+    if len(L) <= 1:
+        return L
+    A = mergesort(L[:int(len(L)/2)])
+    B = mergesort(L[int(len(L)/2):])
+    return merge(A, B)
+\end{verbatim}
+
+\begin{proof}[Answer]
+We find the space of Mergesort by finding the sum of the space used by each branch that is executed for the Mergesort lists. When we branch out on A, we find that it goes to $\frac{n}{2^k}$ layers. So we find that the space used by the Mergesort implementation $T(n) = \displaystyle\sum_{i=0} ^{k} (\frac{n}{2^i})$
+\end{proof}
+
+\end{required}
+
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT

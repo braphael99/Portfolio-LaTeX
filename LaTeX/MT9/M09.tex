@@ -1,0 +1,201 @@
+\documentclass[11pt]{article} 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\
+Instructors: Prof. Layer and Chandra Kanth Nagesh} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Midterm 1 Standard 9 - Flow Terminology \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{Your Name}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill March 10 \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Quiz Code (enter in Canvas to get access to the LaTeX template) \dotfill \textbf{AWESS} \\
+
+\tableofcontents
+
+\section{Instructions}
+ \begin{itemize}
+	\item The solutions \textbf{should be typed}, using proper mathematical notation. We cannot accept hand-written solutions. \href{http://ece.uprm.edu/~caceros/latex/introduction.pdf}{Here's a short intro to \LaTeX.}
+	\item You should submit your work through the \textbf{class Canvas page} only. Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You \textbf{may not collaborate with other students}. \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Discord, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\end{itemize}
+
+\newpage
+\section{Standard 9 - Flow Terminology}
+
+\subsection{Problem \ref{FlowTerms}}
+\begin{required} \label{FlowTerms}
+Consider the network and flow pictured below. \begin{center}
+\tikz{
+    \tikzstyle{default}=[circle,top color = white, draw];
+    \node (A) at (0,2) [default] {$A$};
+    \node (B) at (2,4) [default] {$B$};
+    \node (C) at (2,0) [default] {$C$};
+    \node (D) at (4,2) [default] {$D$};
+    \node (E) at (6,4) [default] {$E$};
+    \node (F) at (6,0) [default] {$F$};
+    \node (G) at (8,2) [default] {$G$};
+
+    \draw (A) [-latex] -- node[left] {$3/4$}  (B);
+    \draw (A) [-latex] -- node[left] {$3/3$}  (C);
+
+    \draw (B) [-latex] -- node[left]  {$0/1$} (C);
+    \draw (B) [-latex]-- node[right] {$2/7$} (D);
+    \draw (B) [-latex]-- node[above] {$1/8$} (E);
+
+    \draw (C) [-latex]-- node[above] {$1/6$} (D);
+    \draw (C) [-latex]-- node[above] {$2/12$} (F);
+
+    \draw (D) [-latex]-- node[left]  {$1/5$}(E);
+    \draw (D) [-latex]-- node[right] {$2/10$} (F);
+
+    \draw (E) [-latex]-- node[right] {$0/9$}(F);
+    \draw (E) [-latex] -- node[right] {$2/2$}(G);
+
+    \draw (F) [-latex] -- node[right] {$4/11$} (G);
+}
+\end{center}
+
+% Either type your answer in below, or uncomment the \includegraphics command
+% and use it to insert an approprate image. Try experimenting with the scale
+% 0.9 the width option to resize your image if necessary.
+
+%\includegraphics[width=0.9\textwidth]{solution.jpg}
+
+\renewcommand{\theenumi}{\alph{enumi}}
+\begin{enumerate}
+
+\item Which node is the source? Why?
+\begin{proof}[Answer]
+The source node is $A$ since there is only flow coming out and no flow coming in.\\
+\end{proof}
+
+\item Which node is the sink? Why?
+\begin{proof}[Answer]
+The sink node is $G$ since there is only flow coming into the node and no flow heading out of the node.\\
+\end{proof}
+
+\item Why is or why isn't this a valid flow.
+\begin{proof}[Answer]
+This is a valid flow because flow out of source $A$ is equal to flow into sink $G$ at $6$. Also every node that is not a source or sink has an equal amount of flow going into and out of said node.\\
+\end{proof}
+
+\item What is the value of the flow?
+\begin{proof}[Answer]
+The value of this flow in its current state is $6$.\\
+\end{proof}
+
+\item Find one source to sink path that is saturated.
+\begin{proof}[Answer]
+A path that is saturated is the following:\\
+$A \to C \to D \to E \to G$.\\
+This is because we cannot push any more flow through this path.
+\end{proof}
+
+\item Find one source to sink path that is not saturated and give its maximum additional capacity.
+\begin{proof}[Answer]
+A source to sink path that is not saturated is the following: \\
+$A \to B \to D \to F \to G$.\\
+We can push $1$ more additional unit of flow through this path. This is because we have to take the minimum amount of additional flow that can be pushed along any edge in our path to use as the maximum amount of additional flow we can push through the entire path. That is $A \to B$ is at $3/4$ capacity, so we can only push $1$ more unit of flow. This also brings our total flow to $7$.\\
+\end{proof}
+\end{enumerate}
+
+
+
+%Include an Image: \includegraphics{ImageFileName}
+%Include an Image and Rotate 90 degree: \includegraphics[angle=90]{ImageFileName}
+%Include an Image, Rotate by 180 degrees, and scale by 50\% \includegraphics[scale=0.5, angle=90]{ImageFileName}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{required}
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT

@@ -1,0 +1,11 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Instructions}{1}{section.1}%
+\contentsline {section}{\numberline {2}Honor Code (Make Sure to Virtually Sign)}{2}{section.2}%
+\contentsline {section}{\numberline {3}\LaTeX \ Intro}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.2}Problem \ref {Latex1}}{3}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Problem \ref {Latex2}}{4}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Problem \ref {Latex3}}{5}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Problem \ref {Latex4}}{6}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Problem \ref {LatexCode}}{7}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}Problem \ref {RotateImage}}{8}{subsection.3.7}%
+\contentsline {subsection}{\numberline {3.8}Problem \ref {Math}}{9}{subsection.3.8}%

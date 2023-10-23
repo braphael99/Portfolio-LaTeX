@@ -1,0 +1,229 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage[siunitx]{circuitikz}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos, color=orange!50]{todonotes}
+\usepackage{hyperref}
+\usepackage[numbers, square]{natbib}
+\usepackage{fancybox}
+\usepackage{epsfig}
+\usepackage{soul}
+\usepackage[framemethod=tikz]{mdframed}
+\usetikzlibrary{positioning, automata, backgrounds}
+\usepackage[shortlabels]{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{multicol}
+\usepackage{forest}
+\usepackage{mathtools}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[numbers]{natbib}
+\usepackage{subfiles}
+\usepackage{tkz-berge}
+
+
+\newcommand{\interval}[4]{\draw (#2, #1) -- (#3, #1); % Usage: \interval{height}{start}{end}{label}
+\draw (#2, #1-0.11) -- (#2, #1+0.11); % draw left whisker
+\draw (#3, #1-0.11) -- (#3, #1+0.11); % draw right whisker
+\node[] at (#2-0.25, #1) {#4};
+}
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{cor}{Corollary}[prop]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{required}{Problem}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}
+
+
+\setlength{\marginparwidth}{3.4cm}
+%#########################################################
+
+%To use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%To change footnotes back to numbers uncomment the following line
+%\renewcommand*{\thefootnote}{\arabic{footnote}}
+
+% Enable this command to adjust line spacing for inline math equations.
+% \everymath{\displaystyle}
+
+% _______ _____ _______ _      ______ 
+%|__   __|_   _|__   __| |    |  ____|
+%   | |    | |    | |  | |    | |__   
+%   | |    | |    | |  | |    |  __|  
+%   | |   _| |_   | |  | |____| |____ 
+%   |_|  |_____|  |_|  |______|______|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+\normalfont \normalsize 
+\textsc{CSCI 3104 Spring 2023 \\ 
+Instructors: Ryan Layer and Chandra Kanth Nagesh} \\
+[10pt] 
+\rule{\linewidth}{0.5pt} \\[6pt] 
+\huge Homework 4 \\
+\rule{\linewidth}{2pt}  \\[10pt]
+}
+%\author{}
+\date{}
+
+\begin{document}
+
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+\definecolor{processred}{rgb}{200, 0, 0}
+\definecolor{processgreen}{rgb}{0, 255, 0}
+\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.gif}
+\DeclareGraphicsExtensions{.jpg}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%FILL IN YOUR NAME%%%%%%%
+%%%%%%%%%%AND STUDENT ID%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Due Date \dotfill February 9, 2023 \\
+Name \dotfill \textbf{Blake Raphael} \\
+Student ID \dotfill \textbf{109752312} \\
+Collaborators \dotfill \textbf{Alex Barry and Brody Cyphers}
+
+\tableofcontents
+
+\section{Instructions}
+ \begin{itemize}
+	\item The solutions \textbf{should be typed}, using proper mathematical notation. We cannot accept hand-written solutions. \href{http://ece.uprm.edu/~caceros/latex/introduction.pdf}{Here's a short intro to \LaTeX.}
+	\item You should submit your work through the \textbf{class Gradescope page} only (linked from Canvas). Please submit one PDF file, compiled using this \LaTeX \ template.
+	\item You may not need a full page for your solutions; pagebreaks are there to help Gradescope automatically find where each problem is. Even if you do not attempt every problem, please submit this document with no fewer pages than the blank template (or Gradescope has issues with it).
+
+	\item You are welcome and encouraged to collaborate with your classmates, as well as consult outside resources. You must \textbf{cite your sources in this document.} \textbf{Copying from any source is an Honor Code violation. Furthermore, all submissions must be in your own words and reflect your understanding of the material.} If there is any confusion about this policy, it is your responsibility to clarify before the due date. 
+
+	\item Posting to \textbf{any} service including, but not limited to Chegg, Reddit, StackExchange, etc., for help on an assignment is a violation of the Honor Code.
+
+	\item You \textbf{must} virtually sign the Honor Code (see Section \ref{HonorCode}). Failure to do so will result in your assignment not being graded.
+\end{itemize}
+
+
+\section{Honor Code (Make Sure to Virtually Sign)} \label{HonorCode}
+
+%\begin{required}
+\begin{itemize}
+\item My submission is in my own words and reflects my understanding of the material.
+\item Any collaborations and external sources have been clearly cited in this document.
+\item I have not posted to external services including, but not limited to Chegg, Reddit, StackExchange, etc.
+\item I have neither copied nor provided others solutions they can copy.
+\end{itemize}
+
+%\noindent In the specified region below, clearly indicate that you have upheld the Honor Code. Then type your name. 
+%\end{required}
+
+\begin{proof}[Agreed (I agree to the following, Blake Raphael).]
+%% Typing "I agree to the above," followed by your name is sufficient.
+\end{proof}
+
+\newpage
+\section{Standard 4 -- Examples Where Greedy Algorithms Fail}
+
+\setcounter{subsection}{2}
+\subsection{Problem \ref{GreedyFail1} (2 points)}
+\begin{required} \label{GreedyFail1}
+Recall the \textsf{Interval Scheduling} problem, where we take as input a set of intervals $\mathcal{I}$. The goal is to find a maximum-sized set $S \subseteq \mathcal{I}$, where no two intervals in $S$ intersect. Consider the greedy algorithm where we place all of the intervals of $\mathcal{I}$ into a priority queue, ordered earliest start time to latest start time. We then construct a set $S$ by adding intervals to $S$ as we poll them from the priority queue, provided the element we polled does not intersect with any interval already in $S$. \\
+
+\noindent Provide an example with at least $5$ intervals where this algorithm fails to yield a maximum-sized set of pairwise non-overlapping intervals. Clearly specify both the set $S$ that the algorithm constructs, as well a larger set of pairwise non-overlapping intervals. \\
+
+\noindent You may explicitly specify the intervals by their start and end times (such as in the examples from class) or by drawing them. \textbf{If you draw them, please make it very clear whether two intervals overlap.} You are welcome to hand-draw and embed an image, provided it is legible and we do not have to rotate our screens to grade your work. Your justification should still be typed. If you would prefer to draw the intervals using \LaTeX, we have provided sample code below.
+\end{required}
+
+\begin{proof}[Answer]
+    Consider the set $X$ composed of 8 start and end time intervals $[start, end]$. \\
+    Set $X$ is composed of the following intervals:\\
+    \begin{table}[h!]
+    	\begin{center}
+    		\label{tab:table1}
+    		\begin{tabular}{l|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+    			\textbf{Interval} & \textbf{[Start, End]}\\
+    			\hline
+    			a & [8, 12:30] \\
+    			b & [9, 10:30] \\
+    			c & [10, 11] \\
+    			d & [10, 1:30] \\
+    			e & [11, 1]\\
+    			f & [11:30, 2] \\
+    			g & [12, 3]\\
+    			h & [1:30, 4] \\
+    		\end{tabular}
+    	\end{center}
+    \end{table}
+
+If we use a greedy algorithm taking the earliest, non-overlapping start time first, we get set $S = {a[8, 12:30]}, {h[1:30, 4]}$.\\
+
+This is \textbf{NOT} the max-size, non-overlapping set. That would be set $M$ where $M = {b[9, 10:30]}, {e[11, 1]}, {h[1:30, 4]}$.\\ \indent This shows an example where a greedy algorithm fails.\\
+\end{proof}
+
+
+\newpage
+\subsection{Problem \ref{GreedyFail3} (2 points)}
+\begin{required} \label{GreedyFail3}
+Consider now the \textsf{Weighted Interval Scheduling} problem, where each interval $i$ is specified by 
+\[
+([\text{start}_{i}, \text{end}_{i}], \text{weight}_{i}). 
+\]
+
+\noindent Here, the weight is an assigned value that is independent of the length $\text{end}_{i} - \text{start}_{i}$. Here, you may assume $\text{weight}_{i} > 0$. We seek a set $S$ of pairwise non-overlapping intervals that maximizes $\sum_{i \in S} \text{weight}_{i}$. That is, rather than maximizing the number of intervals, we are seeking to maximize the sum of the weights. \\
+
+\noindent Consider a greedy algorithm which works identically as in Problem \ref{GreedyFail1}. Draw an example with at least 5 appointments where this algorithm fails. Show the order in which the algorithm selects the intervals, and also show a subset with larger weight of non-overlapping intervals than the subset output by the greedy algorithm. The same comments apply here as for Problem \ref{GreedyFail1} in terms of level of explanation.
+\end{required}
+
+
+\begin{proof}[Answer]
+ Consider the set $X$ composed of 8 start and end time intervals $([start, end], weight)$. \\
+ Set $X$ is composed of the following intervals:\\
+ \begin{table}[h!]
+ 	\begin{center}
+ 		\label{tab:table1}
+ 		\begin{tabular}{l|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+ 			\textbf{Interval} & \textbf{[Start, End]}\\
+ 			\hline
+ 			a & ([8, 12:30], 1) \\
+ 			b & ([9, 10:30], 11) \\
+ 			c & ([10, 11], 2) \\
+ 			d & ([10, 1:30], 2) \\
+ 			e & ([11, 1], 4)\\
+ 			f & ([11:30, 2], 2)\\
+ 			g & ([12, 3], 1)\\
+ 			h & ([1:30, 4], 7) \\
+ 		\end{tabular}
+ 	\end{center}
+ \end{table}
+ 
+ Suppose we use a greedy algorithm taking the earliest, non-overlapping start time first. \\
+ \indent This algorithm would add interval $a$ to set $S$ first since it starts earliest.\\
+ \indent The algorithm would then check $b$ and find that it overlaps with $a$, so then it would move on.\\
+ \indent The algorithm will check every interval $c$-$g$ and find that all of these overlap with $a$.\\
+ \indent Finally, it will check interval $h$ and find that it does not overlap, and it is the earliest available start time since it is the last interval, so it can be added to set $S$.\\
+ \indent We get set $S = {a([8, 12:30], 1)}, {h([1:30, 4], 7)}$.\\ \indent This gives us a total weight of 8.\\
+ 
+ Set $S$ is \textbf{NOT} the highest-weight, non-overlapping set.\\ \indent That would be set $M$ where $M = {b([9, 10:30], 11)}, {e([11, 1], 4)}, {h([1:30, 4], 7)}$.\\ \indent This gives us a total weight of 22.\\ \indent This shows an example where a greedy algorithm again fails.\\
+\end{proof}
+\end{document} % NOTHING AFTER THIS LINE IS PART OF THE DOCUMENT
